@@ -4,3 +4,5 @@ __pycache__/
 *$py.classx
 
 src/models
+src/classified
+src/smac3-output*
