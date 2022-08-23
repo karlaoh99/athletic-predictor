@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from typing import List
 import joblib
+import dill
 
 import numpy as np
 from prediction_saver import get_country_nd_name
@@ -13,8 +14,15 @@ from events_data import events, maximize_events, events_in_groups, get_event_par
 from sklearn.neighbors import KernelDensity
 from sklearn.model_selection import GridSearchCV
 
+from ConfigSpace import ConfigurationSpace
+from ConfigSpace.hyperparameters import UniformFloatHyperparameter
+from smac.facade.smac_bb_facade import SMAC4BB
+from smac.scenario.scenario import Scenario
 
-def model_by_cross_validation(results: np.ndarray, current_bandwith = None) -> KernelDensity:
+from KDEpy import FFTKDE
+
+
+def model_by_cross_validation(results: np.ndarray, current_bandwith = None):
     if current_bandwith is not None:
         model = KernelDensity(bandwidth=current_bandwith, kernel='gaussian')
         model.fit(X = results.reshape((-1,1)))
@@ -77,11 +85,10 @@ def event_models(event_data, event_name: str, sex: str, save_folder: str = None,
             #     model = joblib.load(full_path)
             # else:
             model = athlete_kde_model(event_data, name, current_bandwith)
-            current_bandwith = model.bandwidth
-            joblib.dump(model, full_path)
+            with open(full_path, 'wb') as f:
+                dill.dump(model, f)
         else:
             model = athlete_kde_model(event_data, name, current_bandwith)
-            current_bandwith = model.bandwidth
         models.append(model)
     return models
 
@@ -111,8 +118,6 @@ def get_ith_place(places, i, fst_positions):
 def run_simulation(names: List[str], models: List[KernelDensity], times=30, maximize=False):
     indices = {name:i for i, name in enumerate(names)}
     count = len(names)
-    print(count)
-    print(times)
     places = np.zeros((times, count), dtype=int)
 
     for t in range(times):
@@ -208,6 +213,7 @@ def simulate_all(events_data, top=3, times=30, logs=True, warnings=False, only=N
                 sex = sex, 
                 times = sim_times, 
                 models_folder='models',
+                override_models=True,
                 logs = logs)
             
             if logs:

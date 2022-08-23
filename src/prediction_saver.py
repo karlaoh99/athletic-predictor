@@ -1,17 +1,10 @@
 import json
-from typing import Dict, List, Tuple
+from typing import List, Tuple
 from datetime import datetime
 from events_data import events_in_groups, events
 
 
-def get_country_nd_name(file_name: str) -> Tuple[str, str]:
-    splitted_list = file_name.split('_')
-    country = splitted_list[0]
-    name = ' '.join(splitted_list[1:])
-    return country, name
-
-
-def format_event_result(event: str, result: List, top: int) -> Dict:
+def _format_event_result(event: str, result: List[str], top: int) -> dict:
     prediction = {}
     prediction['date'] = datetime.now().date().strftime(r'%Y/%m/%d')
     prediction['prediction'] = {}
@@ -30,7 +23,14 @@ def format_event_result(event: str, result: List, top: int) -> Dict:
     return prediction
 
 
-def load_json(file: str) -> Dict:
+def get_country_nd_name(file_name: str) -> Tuple[str, str]:
+    splitted_list = file_name.split('_')
+    country = splitted_list[0]
+    name = ' '.join(splitted_list[1:])
+    return country, name
+
+
+def load_json(file: str) -> dict:
     try:
         with open(file, 'r', encoding='utf-8') as f:
             return json.load(f)
@@ -38,12 +38,12 @@ def load_json(file: str) -> Dict:
         return {}
 
 
-def save_file(pred_json: Dict, file: str):
+def save_json(data: dict, file: str):
     with open(file, 'w+', encoding='utf-8', newline='\n') as f:
-        json.dump(pred_json, f, indent=4, ensure_ascii=False)
+        json.dump(data, f, indent=4, ensure_ascii=False)
 
 
-def save_prediction(results: Dict, top: int, file: str = 'predictions.json'):
+def save_prediction(results: dict, top: int, file: str = 'predictions.json'):
     predictions = load_json(file)
 
     for event in results:
@@ -53,6 +53,6 @@ def save_prediction(results: Dict, top: int, file: str = 'predictions.json'):
             predictions[event]['sex'] = {}
 
         for sex in results[event]:
-            predictions[event]['sex'][sex] = format_event_result(event, results[event][sex], top)
+            predictions[event]['sex'][sex] = _format_event_result(event, results[event][sex], top)
 
-    save_file(predictions, file)
+    save_json(predictions, file)

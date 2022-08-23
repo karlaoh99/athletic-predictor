@@ -671,7 +671,7 @@
         "name": "Lanzamiento de la jabalina",
         "sex": {
             "male": {
-                "date": "2022/07/29",
+                "date": "2022/08/21",
                 "prediction": {
                     "1": {
                         "country": "GER",
@@ -684,11 +684,59 @@
                     "3": {
                         "country": "GRN",
                         "name": "anderson peters"
+                    },
+                    "4": {
+                        "country": "GER",
+                        "name": "julian weber"
+                    },
+                    "5": {
+                        "country": "CZE",
+                        "name": "jakub vadlejch"
+                    },
+                    "6": {
+                        "country": "TTO",
+                        "name": "keshorn walcott"
+                    },
+                    "7": {
+                        "country": "PAK",
+                        "name": "arshad nadeem"
+                    },
+                    "8": {
+                        "country": "FIN",
+                        "name": "oliver helander"
+                    },
+                    "9": {
+                        "country": "GER",
+                        "name": "andreas hofmann"
+                    },
+                    "10": {
+                        "country": "MDA",
+                        "name": "andrian mardare"
+                    },
+                    "11": {
+                        "country": "CZE",
+                        "name": "vítězslav veselý"
+                    },
+                    "12": {
+                        "country": "LAT",
+                        "name": "gatis čakšs"
+                    },
+                    "13": {
+                        "country": "FIN",
+                        "name": "lassi etelätalo"
+                    },
+                    "14": {
+                        "country": "UKR",
+                        "name": "artur felfner"
+                    },
+                    "15": {
+                        "country": "LAT",
+                        "name": "patriks gailums"
                     }
                 }
             },
             "female": {
-                "date": "2022/07/29",
+                "date": "2022/08/21",
                 "prediction": {
                     "1": {
                         "country": "GER",
@@ -701,6 +749,54 @@
                     "3": {
                         "country": "CHN",
                         "name": "huihui lyu"
+                    },
+                    "4": {
+                        "country": "CHN",
+                        "name": "shiying liu"
+                    },
+                    "5": {
+                        "country": "POL",
+                        "name": "maria andrejczyk"
+                    },
+                    "6": {
+                        "country": "USA",
+                        "name": "kara winger"
+                    },
+                    "7": {
+                        "country": "IND",
+                        "name": "annu rani"
+                    },
+                    "8": {
+                        "country": "JPN",
+                        "name": "haruka kitaguchi"
+                    },
+                    "9": {
+                        "country": "CZE",
+                        "name": "nikola ogrodníková"
+                    },
+                    "10": {
+                        "country": "LAT",
+                        "name": "līna mūze"
+                    },
+                    "11": {
+                        "country": "CZE",
+                        "name": "barbora špotáková"
+                    },
+                    "12": {
+                        "country": "AUS",
+                        "name": "mackenzie little"
+                    },
+                    "13": {
+                        "country": "AUS",
+                        "name": "kathryn mitchell"
+                    },
+                    "14": {
+                        "country": "GRE",
+                        "name": "elina tzengko"
+                    },
+                    "15": {
+                        "country": "AUS",
+                        "name": "kelsey-lee barber"
                     }
                 }
             }

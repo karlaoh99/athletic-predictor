@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 from datetime import datetime
-from typing import List, Dict
+from typing import List
 
 
 _month_numbers = {
@@ -33,7 +33,7 @@ def _clean_marks(df: pd.DataFrame):
     df['Date'] = df.Date.map(_convert_date)
 
 
-def read_marks(folder_path: str, only: List[str] = None) -> Dict:
+def read_marks(folder_path: str, only: List[str] = None) -> dict:
     """
     Read the athletes marks from each folder.
 
