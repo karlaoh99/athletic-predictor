@@ -28,29 +28,41 @@ def _convert_date(date: str) -> datetime:
     return datetime(year=int(year), month=_month_numbers[month], day=int(day))
 
 
-def _clean_marks(df: pd.DataFrame):
+def _clean_marks(df: pd.DataFrame) -> None:
     df.dropna(inplace=True)
     df['Date'] = df.Date.map(_convert_date)
 
 
 def read_marks(folder_path: str, only: List[str] = None) -> dict:
-    """
-    Read the athletes marks from each folder.
+    """Reads the athletes marks.
 
+    Only the events that are inside the `folder_path` folder and the 
+    genders inside them will be read. It is important to only have 
+    valid folders and files, because otherwise unexpected errors 
+    could occur. The valid structure inside of the folder must be:
+    ├── event1/
+    │   ├── sex1/
+    │   │   ├── athlete1_marks.csv
+    │   │   │   ...
+    │   │   └── 
+    │   │   ...
+    │   └──
+    │   ...
+    └──
+    
     Parameters
     ----------
     folder_path: str
-        Folder path that contains the folder of each event.
-    only: List[str]
-        List of the events that are going to be read.
+        Folder path that contains the folder of each event
+    only: List[str], optional
+        List of events to be read only
 
     Returns
     -------
-    Dict
-        Athletes marks for each event.
+    dict
+        Athletes marks for each event and genders
         
         Example dict:
-
             {
                 'event_name_1' : {
                     'male' : {
@@ -93,3 +105,8 @@ def read_marks(folder_path: str, only: List[str] = None) -> dict:
             events_data[event][sex] = marks
             
     return events_data
+
+
+__all__ = [
+    "read_marks",
+]
