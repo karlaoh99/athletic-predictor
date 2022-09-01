@@ -30,7 +30,9 @@ def _get_country_and_name(file_name: str) -> Tuple[str, str]:
     return country, name
 
 
-def _load_json(file: str) -> dict:
+def load_json(file: str) -> dict:
+    """Loads a json file and returns a dictionary."""
+
     try:
         with open(file, 'r', encoding='utf-8') as f:
             return json.load(f)
@@ -38,7 +40,9 @@ def _load_json(file: str) -> dict:
         return {}
 
 
-def _save_json(data: dict, file: str) -> None:
+def save_json(data: dict, file: str) -> None:
+    """Saves a dictionary in a json file."""
+
     with open(file, 'w+', encoding='utf-8', newline='\n') as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
 
@@ -58,7 +62,7 @@ def save_prediction(results: dict, competition: CompetitionData, top: int = 3, f
         File path where to save the predictions
     """
 
-    predictions = _load_json(file)
+    predictions = load_json(file)
 
     for event in results:
         if not event in predictions:
@@ -69,9 +73,11 @@ def save_prediction(results: dict, competition: CompetitionData, top: int = 3, f
         for sex in results[event]:
             predictions[event]['sex'][sex] = _format_event_result(results[event][sex], competition.is_event_in_group(event), top)
 
-    _save_json(predictions, file)
+    save_json(predictions, file)
 
 
 __all__ = [
+    "load_json",
+    "save_json",
     "save_prediction",
 ]

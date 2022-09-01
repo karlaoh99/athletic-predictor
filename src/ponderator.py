@@ -1,29 +1,27 @@
 import pandas as pd
-from events_data import CompetitionData
+from competition_data import CompetitionData
 
 
-def ponderate_events_marks(data: dict, competition: CompetitionData, years_weight: dict, alpha: int = 1.3) -> dict:
-    """
-    Transform data according to the parameters
+def ponderate_all_events(data: dict, competition: CompetitionData, years_weight: dict, alpha: int = 1.3) -> dict:
+    """Transforms data according to parameters years_weight and alpha.
 
     Parameters
     ----------
     data: dict
-        Contains for each event and each sex the marks of each athlete
+        Athletes marks for each event and genders
     competition: CompetitionData
-        Conteins the specific data of the competition
+        Contains the data of the competition
     years_weight: dict
         A dictionary with the years to be taken and its weight
-    alpha: int
-        Number for make the experience of an athlete important
+    alpha: int, optional
+        Alpha value involved in the experience of athletes
 
     Returns
     -------
-    Dict
-        A dictionary with the data transformed.
+    dict
+        A dictionary with the data transformed
         
         Example dict:
-
             {
                 'event_name_1' : {
                     'male' : {
@@ -36,29 +34,74 @@ def ponderate_events_marks(data: dict, competition: CompetitionData, years_weigh
                 ...
             }
     """
+
     pond_data = {}
     for event in data:
         pond_data[event] = {}
         maximize = competition.is_maximize_event(event)
 
         for sex in data[event]:
-            pond_data[event][sex] = {}
-            
-            for athlete, df in data[event][sex].items():
-                pond_marks = ponderate_marks(df, maximize, years_weight, alpha)
-                if pond_marks is not None:
-                    pond_data[event][sex][athlete] = pond_marks
-                else:
-                    print(f"WARNING: Athlete {athlete} does not have any valid mark")
+            pond_data[event][sex] = ponderate_event(data[event][sex], maximize, years_weight, alpha)
+        
+    return pond_data
+
+
+def ponderate_event(data: dict, maximize: bool, years_weight: dict, alpha: int = 1.3) -> dict:
+    """Transforms an event data according to parameters years_weight and alpha.
+
+    Parameters
+    ----------
+    data: dict
+        Athletes marks for each event and genders
+    maximize: bool
+        True if the goal of the event is to maximize the result
+    years_weight: dict
+        A dictionary with the years to be taken and its weight
+    alpha: int, optional
+        Alpha value involved in the experience of athletes
+
+    Returns
+    -------
+    dict
+        A dictionary with the data transformed for each athlete
+    """
+
+    pond_data = {}
+    
+    for athlete, df in data.items():
+        pond_marks = ponderate_marks(df, maximize, years_weight, alpha)
+        if pond_marks is not None:
+            pond_data[athlete] = pond_marks
+        else:
+            print(f"WARNING: Athlete {athlete} does not have any valid mark")
         
     return pond_data
 
 
 def ponderate_marks(marks: pd.DataFrame, maximize: bool, years_weight: dict, alpha: int = 1.3) -> pd.DataFrame:
-    # if maximize:
-    #     alpha = -abs(alpha)
-    # else:
-    #     alpha = abs(alpha)
+    """Transforms marks according to parameters years_weight and alpha.
+
+    Parameters
+    ----------
+    marks: pd.DataFrame
+        Athlete's marks
+    maximize: bool
+        True if the goal of the event is to maximize the result
+    years_weight: dict
+        A dictionary with the years to be taken and its weight
+    alpha: int, optional
+        Alpha value involved in the experience of athletes
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with the athlete's marks transformed
+    """
+
+    if maximize:
+        alpha = -abs(alpha)
+    else:
+        alpha = abs(alpha)
 
     pond_marks = []
 
@@ -81,6 +124,14 @@ def ponderate_marks(marks: pd.DataFrame, maximize: bool, years_weight: dict, alp
         # if get_event_param(event, sex, 'alpha_excp', False):
         #     pond_val = 1 + alpha / len(pond_marks)
         #     df_marks.Result *= pond_val
+            
         return df_marks
 
     return None
+
+
+__all__ = [
+    ponderate_all_events,
+    ponderate_event,
+    ponderate_marks,
+]

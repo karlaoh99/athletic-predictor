@@ -1,26 +1,3 @@
-
-class CompetitionData:
-
-    def __init__(self, events_data={}, maximize_events=[], events_in_groups=[]):
-        self._events_data = events_data
-        self._maximize_events = maximize_events
-        self._events_in_groups = events_in_groups
-        self.events = [n for n in events_data.keys()]
-
-    def get_event_data(self, event):
-        try:
-            return self.events_data[event]
-        except:
-            # TODO: Throw an exception
-            pass
-
-    def is_maximize_event(self, event):
-        return event in self._maximize_events
-
-    def is_event_in_group(self, event):
-        return event in self._events_in_groups
-
-
 events = {
     'atl_100m': {
         'name': "100 metros planos",
@@ -144,7 +121,6 @@ events_in_groups = [
 ]
 
 
-# TODO: optimize this params
 event_params = {
     'atl_800m':{
         'female':{
@@ -281,22 +257,12 @@ event_params = {
         'female':{
             'alpha_excp': False,
             'bw': None,
-            # 'sim_times': 5000,
+            'sim_times': 5000,
         },
         'male':{
             'alpha_excp': False,
             'bw': None,
-            #'sim_times': 5000,
+            'sim_times': 5000,
         }
     }
 }
-
-
-def get_event_param(event: str, sex: str, param: str, default=None):
-    if event not in event_params:
-        return default
-
-    event_sex = event_params[event]
-    if sex not in event_sex:
-        return default    
-    return event_sex[sex].get(param, default)
