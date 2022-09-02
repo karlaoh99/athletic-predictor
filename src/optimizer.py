@@ -5,8 +5,6 @@ from smac.facade.smac_bb_facade import SMAC4BB
 from smac.scenario.scenario import Scenario
 
 from typing import List, Callable
-from datetime import date
-import sklearn.metrics as sm
 import numpy as np
 
 from competition_data import CompetitionData
@@ -19,16 +17,28 @@ class SMAC4BBOptimizer:
         self.runcount = runcount
         self.calculate_error = calculate_error
 
-    def optimize(self, x_train: dict, y_train: List[str], event: str, sex: str, competition: CompetitionData):
+    def optimize(self, x_train: dict, y_train: List[str], event: str, sex: str, competition: CompetitionData):        
         # Define your hyperparameters
         configspace = ConfigurationSpace()
-        configspace.add_hyperparameter(UniformFloatHyperparameter('bandwidth', lower=0.1, upper=5, log=False))
-        
+
+        # Hyperparameter Bandwidth
+        min = 5000
+        max = 0
+        for _, results in x_train.items():
+            min = np.min(results.Result.to_list() + [min])
+            max = np.max(results.Result.to_list() + [max])
+        half_range = (max - min) / 2
+
+        # configspace.add_hyperparameter(UniformFloatHyperparameter('bandwidth', lower=0.1, upper=5, log=False))
+        configspace.add_hyperparameter(OrdinalHyperparameter('bandwidth', sequence=np.linspace(1e-3, half_range, self.runcount)))
+
+        # Hyperparameter Number of Simulations
+        # configspace.add_hyperparameter(OrdinalHyperparameter('n_sim', sequence=[str(n) for n in np.arange(500, 5001, 500)]))
+
         # configspace.add_hyperparameter(UniformIntegerHyperparameter('n_years', lower=2, upper=5, log=False))
         # configspace.add_hyperparameter(UniformIntegerHyperparameter('y0', lower=1, upper=8, log=False))
         # configspace.add_hyperparameter(UniformIntegerHyperparameter('y1', lower=1, upper=8, log=False))
         # configspace.add_hyperparameter(UniformIntegerHyperparameter('y2', lower=1, upper=8, log=False))
-        # configspace.add_hyperparameter(OrdinalHyperparameter('n_sim', sequence=[str(n) for n in np.arange(500, 5001, 500)]))
 
         # Provide meta data for the optimization
         scenario = Scenario({
@@ -53,8 +63,10 @@ class SMAC4BBOptimizer:
             # pond_times[year] = config['y0']
             # pond_times[year-1] = config['y1']
             # pond_times[year-2] = config['y2']
+            print(config['bandwidth'])
             competition.set_event_param(event, sex, 'bw', config['bandwidth'])
-            
+            competition.set_event_param(event, sex, 'sim_times', 1000)
+
             pond_times = {
             2022: 4,
             2021: 2,
@@ -64,14 +76,16 @@ class SMAC4BBOptimizer:
             pond_data = ponderate_event(
                 data=x_train, 
                 maximize=competition.is_maximize_event(event), 
-                years_weight=pond_times
+                years_weight=pond_times,
+                alpha=0
             )
+
             sim_result = simulate_event(
                 data=pond_data, 
                 event=event, 
                 sex=sex,
                 competition=competition,
-                times= 50,
+                times= 1000,
                 models_folder='models',
                 override_models=True, 
             )
@@ -108,11 +122,14 @@ def calculate_error3(result, prediction):
     e = 0
     above = []
     for name in result:
-        p_index = prediction.index(name)
-        for i in range(0, p_index):
-            if prediction[i] not in above:
-                e += 1
-        above.append(name)
+        try:
+            p_index = prediction.index(name)
+            for i in range(0, p_index):
+                if prediction[i] not in above:
+                    e += 1
+            above.append(name)
+        except:
+            continue
 
     return e
 

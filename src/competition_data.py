@@ -42,6 +42,10 @@ class CompetitionData:
     def set_event_param(self, event: str, sex: str, param: str, value) -> None:
         """Updates the value of the parameter in the event."""
         
+        if event not in self._events_params:
+            self._events_params[event] = {}
+        if sex not in self._events_params[event]:
+            self._events_params[event][sex] = {}
         self._events_params[event][sex][param] = value
 
     def is_in_entry_list(self, event: str, sex: str, athlete: str) -> bool:

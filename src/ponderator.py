@@ -2,7 +2,7 @@ import pandas as pd
 from competition_data import CompetitionData
 
 
-def ponderate_all_events(data: dict, competition: CompetitionData, years_weight: dict, alpha: int = 1.3) -> dict:
+def ponderate_all_events(data: dict, competition: CompetitionData, years_weight: dict, alpha: int = 0) -> dict:
     """Transforms data according to parameters years_weight and alpha.
 
     Parameters
@@ -41,12 +41,13 @@ def ponderate_all_events(data: dict, competition: CompetitionData, years_weight:
         maximize = competition.is_maximize_event(event)
 
         for sex in data[event]:
+            alpha = competition.get_event_param(event, sex, 'alpha', alpha)
             pond_data[event][sex] = ponderate_event(data[event][sex], maximize, years_weight, alpha)
         
     return pond_data
 
 
-def ponderate_event(data: dict, maximize: bool, years_weight: dict, alpha: int = 1.3) -> dict:
+def ponderate_event(data: dict, maximize: bool, years_weight: dict, alpha: int) -> dict:
     """Transforms an event data according to parameters years_weight and alpha.
 
     Parameters
@@ -78,7 +79,7 @@ def ponderate_event(data: dict, maximize: bool, years_weight: dict, alpha: int =
     return pond_data
 
 
-def ponderate_marks(marks: pd.DataFrame, maximize: bool, years_weight: dict, alpha: int = 1.3) -> pd.DataFrame:
+def ponderate_marks(marks: pd.DataFrame, maximize: bool, years_weight: dict, alpha: int) -> pd.DataFrame:
     """Transforms marks according to parameters years_weight and alpha.
 
     Parameters
@@ -119,11 +120,8 @@ def ponderate_marks(marks: pd.DataFrame, maximize: bool, years_weight: dict, alp
 
     if pond_marks:
         df_marks = pd.DataFrame(pond_marks)
-        
-        # TODO: alpha is changing the actual value of the mark, but still there must be a way of make experience important
-        # if get_event_param(event, sex, 'alpha_excp', False):
-        #     pond_val = 1 + alpha / len(pond_marks)
-        #     df_marks.Result *= pond_val
+        pond_val = 1 + alpha / len(pond_marks)
+        df_marks.Result *= pond_val
             
         return df_marks
 

@@ -124,69 +124,69 @@ events_in_groups = [
 event_params = {
     'atl_800m':{
         'female':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': 1.5,
             'sim_times': 5000,
         }
     },
     'atl_tri':{
         'male':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': 0.2,
             #'sim_times': None,
         }
     },
     'atl_dis':{
         'male':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': 2,
             #'sim_times': 5000,
         }
     },
     'atl_mar':{
         'male':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': None,
             # 'sim_times': None,
         },
         'male':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': None,
             # 'sim_times': None,
         }
     },
     'atl_jab':{
         'male':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': 1.6,
             #'sim_times': 5000,
         },        
         'female':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': 1.6,
             # 'sim_times': None,
         }
     },
     'atl_400m':{
         'female':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': 0.8,
             #'sim_times': 5000,
         }
     },
     'atl_4x400m':{
         'male':{
-            'alpha_excp': True,
+            'alpha': 1.3,
             'bw': 0.5,
             # 'sim_times': 6000,
         },
         'female':{
-            'alpha_excp': True,
+            'alpha': 1.3,
             'bw': 0.5,
             # 'sim_times': 6000,
         },
         'mixed':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': 2,
             # 'sim_times': 6000,
         }
@@ -194,73 +194,73 @@ event_params = {
     
     'atl_4x100m':{
         'male':{
-            'alpha_excp': True,
+            'alpha': 1.3,
             'bw': 1,
             #'sim_times': 5000,
         },
         'female':{
-            'alpha_excp': True,
+            'alpha': 1.3,
             'bw': 0.5,
             # 'sim_times': 6000,
         }
     },
     'atl_5000m':{
         'female':{
-            'alpha_excp': True,
+            'alpha': 1.3,
             'bw': 17,
             #'sim_times': 5,
         }
     },
     'atl_3000m':{
         'male':{
-            'alpha_excp': True,
+            'alpha': 1.3,
             'bw': None,
             #'sim_times': 7000,
         }
     },
     'atl_lar':{
         'male':{
-            'alpha_excp': True,
+            'alpha': 1.3,
             'bw': None,
             #'sim_times': 5000,
         }
     },
     'atl_100m':{
         'male':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': None,
             #'sim_times': 5000,
         }
     },
     'atl_800m':{
         'male':{
-            'alpha_excp': True,
+            'alpha': 1.3,
             'bw': None,
             #'sim_times': 7000,
         }
     },
     'atl_per':{
         'female':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': None,
             #'sim_times': 5000,
         }
     },
     'atl_10000m':{
         'female':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': 10,
             #'sim_times': 5000,
         }
     },
     'atl_mat':{
         'female':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': None,
             'sim_times': 5000,
         },
         'male':{
-            'alpha_excp': False,
+            'alpha': 0,
             'bw': None,
             'sim_times': 5000,
         }
