@@ -1,34 +1,90 @@
 class CompetitionData:
     """Represents a competition, storing the data of the events."""
 
-    def __init__(self, events_data={}, maximize_events=[], events_in_groups=[], events_params={}, entry_list=None):
+    def __init__(self, name: str, events_data: dict, events_params: dict = {}, entry_list: dict = None):
+        """
+        Parameters
+        ----------
+        name : str
+            The name of the competition
+        events_data : dict
+            A dictionary that stores for each event its data. Example:
+            {
+                'event_name_1' : {
+                    'name' : "Event 1 name",
+                    'sex' : ['male', 'female', 'mixed'],
+                    'maximize' : False,
+                    'in_group' : False,
+                },
+                ...
+            }
+        events_params : dict, optional
+            A dictionary that stores for each event and gender some parameters values. Example:
+            {
+                'event_name_1' : {
+                    'male' : {
+                        'param-name-1' : 'param-value-1',
+                        'param-name-2' : 'param-value-2',
+                        ...
+                    },
+                    ...
+                },
+                ...
+            }
+        entry_list : dict, optional
+            A dictionary that stores for each event and gender a list of the athletes names 
+            that will participate in the competition. Example:
+            {
+                'event_name_1' : {
+                    'male' : [
+                        'athlete-name-1',
+                        'athlete-name-2',
+                        ...
+                    ],
+                    ...
+                },
+                ...
+            }
+        """
+        
         self._events_data = events_data
-        self._maximize_events = maximize_events
-        self._events_in_groups = events_in_groups
         self._events_params = events_params
         self._entry_list = entry_list
         self.events = [n for n in events_data.keys()]
+        self.name = name
 
-    def get_event_data(self, event: str) -> dict:
-        """Returns the data of an event."""
-        
-        try:
-            return self._events_data[event]
-        except:
-            raise Exception(f"The event {event} is not registered in the competition")
+    def _check_valid_event(self, event: str) -> None:
+        if event not in self.events:
+            raise Exception(f"The event {event} is not registered in the competition.")
 
     def is_maximize_event(self, event: str) -> bool:
         """Returns true if the goal of an event is to maximize the result."""
 
-        return event in self._maximize_events
+        self._check_valid_event(event)
+        return self._events_data[event]['maximize']
 
     def is_event_in_group(self, event: str) -> bool:
         """Returns true if the event is in groups category."""
 
-        return event in self._events_in_groups  
+        self._check_valid_event(event)
+        return self._events_data[event]['in_group']  
+
+    def is_in_entry_list(self, event: str, sex: str, athlete: str) -> bool:
+        """Returns true if the athlete is in the entry list of the competition."""
+
+        self._check_valid_event(event)
+        return (self._entry_list is None) or (athlete.casefold() in self._entry_list[event][sex])
+
+    def get_event_data(self, event: str) -> dict:
+        """Returns the data of an event."""
+        
+        self._check_valid_event(event)
+        return self._events_data[event]
 
     def get_event_param(self, event: str, sex: str, param: str, default=None):
         """Returns the value of a specific parameter for an event."""
+
+        self._check_valid_event(event)
 
         if event not in self._events_params:
             return default
@@ -42,18 +98,13 @@ class CompetitionData:
     def set_event_param(self, event: str, sex: str, param: str, value) -> None:
         """Updates the value of the parameter in the event."""
         
+        self._check_valid_event(event)
+
         if event not in self._events_params:
             self._events_params[event] = {}
         if sex not in self._events_params[event]:
             self._events_params[event][sex] = {}
         self._events_params[event][sex][param] = value
-
-    def is_in_entry_list(self, event: str, sex: str, athlete: str) -> bool:
-        """Returns True if the athlete is in the entry list of the competition."""
-
-        if self._entry_list is None:
-            return True
-        return athlete.casefold() in self._entry_list[event][sex]
 
 
 __all__ = [
