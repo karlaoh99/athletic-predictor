@@ -7,13 +7,13 @@ def ponderate_all_events(data: dict, competition: CompetitionData, years_weight:
 
     Parameters
     ----------
-    data: dict
+    data : dict
         Athletes marks for each event and genders
-    competition: CompetitionData
+    competition : CompetitionData
         Contains the data of the competition
-    years_weight: dict
+    years_weight : dict
         A dictionary with the years to be taken and its weight
-    alpha: int, optional
+    alpha : int, optional
         Alpha value involved in the experience of athletes
 
     Returns
@@ -52,13 +52,13 @@ def ponderate_event(data: dict, maximize: bool, years_weight: dict, alpha: int) 
 
     Parameters
     ----------
-    data: dict
+    data : dict
         Athletes marks for each event and genders
-    maximize: bool
+    maximize : bool
         True if the goal of the event is to maximize the result
-    years_weight: dict
+    years_weight : dict
         A dictionary with the years to be taken and its weight
-    alpha: int, optional
+    alpha : int, optional
         Alpha value involved in the experience of athletes
 
     Returns
@@ -84,13 +84,13 @@ def ponderate_marks(marks: pd.DataFrame, maximize: bool, years_weight: dict, alp
 
     Parameters
     ----------
-    marks: pd.DataFrame
+    marks : pd.DataFrame
         Athlete's marks
-    maximize: bool
+    maximize : bool
         True if the goal of the event is to maximize the result
-    years_weight: dict
+    years_weight : dict
         A dictionary with the years to be taken and its weight
-    alpha: int, optional
+    alpha : int, optional
         Alpha value involved in the experience of athletes
 
     Returns

@@ -52,13 +52,13 @@ def save_prediction(results: dict, competition: CompetitionData, top: int = 3, f
     
     Parameters
     ----------
-    results: dict
+    results : dict
         Resulting prediction for each event and gender
-    competition: CompetitionData
+    competition : CompetitionData
         The data of the events in a competition
-    top: int, optional
+    top : int, optional
         Number of positions to save
-    file: str, optional
+    file : str, optional
         File path where to save the predictions
     """
 
