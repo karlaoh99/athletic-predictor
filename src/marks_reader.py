@@ -28,12 +28,19 @@ def _convert_date(date: str) -> datetime:
     return datetime(year=int(year), month=_month_numbers[month], day=int(day))
 
 
-def _clean_marks(df: pd.DataFrame) -> None:
+def _clean_marks(df: pd.DataFrame, limit_date: datetime = None) -> None:
     df.dropna(inplace=True)
-    df['Date'] = df.Date.map(_convert_date)
+    df.Date = df.Date.map(_convert_date)
+    
+    if limit_date is not None:
+        indexs = []
+        for index, row in df.iterrows():
+            if row.Date.to_pydatetime() >= limit_date:
+                indexs.append(index)
+        df.drop(indexs, inplace=True)
 
 
-def read_marks(folder_path: str, only: List[str] = None) -> dict:
+def read_marks(folder_path: str, only: List[str] = None, limit_date: datetime = None) -> dict:
     """Reads the athletes marks.
 
     Only the events that are inside the `folder_path` folder and the 
@@ -52,10 +59,12 @@ def read_marks(folder_path: str, only: List[str] = None) -> dict:
     
     Parameters
     ----------
-    folder_path: str
+    folder_path : str
         Folder path that contains the folder of each event
-    only: List[str], optional
+    only : List[str], optional
         List of events to be read only
+    limit_date : datetime, optional
+        Limit date for marks
 
     Returns
     -------
@@ -66,8 +75,8 @@ def read_marks(folder_path: str, only: List[str] = None) -> dict:
             {
                 'event_name_1' : {
                     'male' : {
-                        'athlete-name-1': athlete1_marks_df,
-                        'athlete-name-2': athlete2_marks_df,
+                        'athlete-name-1' : athlete1_marks_df,
+                        'athlete-name-2' : athlete2_marks_df,
                         ...
                     },
                     ...
@@ -93,14 +102,9 @@ def read_marks(folder_path: str, only: List[str] = None) -> dict:
             for athlete_entry in os.scandir(sex_entry.path):
                 athlete = athlete_entry.name.split('.')[0]
                 athlete_marks = pd.read_csv(athlete_entry.path, encoding='utf-8')
-                
-                # TODO: Classified data reader is not working well
-                if athlete == 'classified':
-                    #marks = {k:v for k, v in marks.items() if k in classified.Country.to_numpy()}
-                    continue
-                else:
-                    _clean_marks(athlete_marks)
-                    marks[athlete] = athlete_marks
+              
+                _clean_marks(athlete_marks, limit_date)
+                marks[athlete] = athlete_marks
             
             events_data[event][sex] = marks
             
