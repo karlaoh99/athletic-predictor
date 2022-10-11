@@ -1,11 +1,10 @@
 import joblib
 import dill
 import numpy as np
-
 from typing import List, Dict
 from pathlib import Path
-from competition_data import CompetitionData
 from sklearn.neighbors import KernelDensity
+from src.competition_data import CompetitionData
 
 
 def _create_kde_model(results: np.ndarray, bandwidth: float) -> KernelDensity:
@@ -13,32 +12,9 @@ def _create_kde_model(results: np.ndarray, bandwidth: float) -> KernelDensity:
     model.fit(X = results.reshape((-1,1)))
     return model
 
-    # results_range = np.max(results) - np.min(results)
-    # half_range = results_range / 2
 
-    # param_grid = {
-    #     'kernel': ['gaussian'],
-    #     'bandwidth' : np.linspace(1e-3, half_range, 100)
-    # }
-
-    # grid = GridSearchCV(
-    #         estimator  = KernelDensity(),
-    #         param_grid = param_grid,
-    #         n_jobs     = -1,
-    #         cv         = 10,
-    #         verbose    = 0
-    #     )
-
-    # grid.fit(X = results.reshape((-1,1)))
-    # model: KernelDensity = grid.best_estimator_
-    # return model
-
-
-def _create_event_models(event_data: dict, event: str, sex: str, bandwidth: float, save_folder: str = None,
-                        override_models: bool = False, logs: bool = False) -> Dict[str, KernelDensity]:
-    
-    if logs:
-        print(f'Creating models for event {event} and sex {sex}...')
+def _create_event_models(event_data: dict, bandwidth: float, save_folder: str = None,
+                        override_models: bool = True, logs: bool = False) -> Dict[str, KernelDensity]:
 
     models = {}
     athletes_name = event_data.keys()
@@ -49,7 +25,7 @@ def _create_event_models(event_data: dict, event: str, sex: str, bandwidth: floa
         
         results = event_data[name].Result.to_numpy()
         model = _create_kde_model(results, bandwidth)
-        
+
         if save_folder is not None:
             folder_path = Path(save_folder)
             folder_path.mkdir(parents=True, exist_ok=True)
@@ -57,7 +33,7 @@ def _create_event_models(event_data: dict, event: str, sex: str, bandwidth: floa
 
             if full_path.exists() and not override_models:
                 if logs:
-                    print(f'    Model already exist.')
+                    print(f'    Loading model that already exist...')
                 model = joblib.load(full_path)
             else:
                 with open(full_path, 'wb') as f:
@@ -68,7 +44,7 @@ def _create_event_models(event_data: dict, event: str, sex: str, bandwidth: floa
     return models
 
 
-def _get_ith_place(places, i, fst_positions):
+def _get_ith_place(places: np.array, i: int, fst_positions: List[int]) -> int:
     record = np.zeros(places.shape[1], dtype=int)
 
     for place in places:        
@@ -98,7 +74,6 @@ def _run_simulation(names: List[str], models: List[KernelDensity], times: int, m
     record = np.zeros(count, dtype=int)
     for place in places:
         record[place[0]] += 1
-
     first_place = np.argmax(record)
     
     order = [first_place]
@@ -109,16 +84,44 @@ def _run_simulation(names: List[str], models: List[KernelDensity], times: int, m
 
 
 def simulate_event(data: dict, event: str, sex: str, competition: CompetitionData, times: int, models_folder: str = None, 
-                   override_models: bool = False, logs: bool = False):
-    
-    bandwidth = competition.get_event_param(event, sex, 'bw', None)
+                   override_models: bool = True, logs: bool = False) -> List[str]:
+    """Simulates an event.
+
+    Parameters
+    ----------
+    data : dict
+        Athletes marks of an event and gender
+    event : str
+        Event name
+    sex : str
+        Event gender
+    competition : CompetitionData
+        Contains the data of the competition
+    times : int
+        Number of times to do the simulation
+    models_folder : str, optional
+        The folder where to store the models created or from where to load them  
+    override_models : bool, optional
+        True if old models want to be loaded
+    logs : bool, optional
+        True if logs want to be shown
+
+    Returns
+    -------
+    List[str]
+        The final result of the simulation
+    """
+
+    bandwidth = competition.get_event_param(event, sex, 'bw', 1)
     sim_times = competition.get_event_param(event, sex, 'sim_times', times)
 
     if models_folder is not None:
         event_folder = Path(models_folder) / Path(event) / Path(sex)
         models_folder = str(event_folder)
 
-    event_models = _create_event_models(data, event, sex, bandwidth, models_folder, override_models, logs=logs)
+    if logs:
+        print(f'Creating athletes models for event {event} and sex {sex}...')
+    event_models = _create_event_models(data, bandwidth, models_folder, override_models, logs)
     
     models = []
     names = []
@@ -132,7 +135,35 @@ def simulate_event(data: dict, event: str, sex: str, competition: CompetitionDat
     return _run_simulation(names, models, sim_times, competition.is_maximize_event(event))
 
 
-def simulate_all_events(data: dict, competition: CompetitionData, top: int = 3, times: int = 30, only: List[str] = None, logs: bool = False) -> dict:
+def simulate_all_events(data: dict, competition: CompetitionData, top: int = 3, times: int = 30, models_folder: str = None, 
+                        override_models: bool = True, only: List[str] = None, logs: bool = False) -> dict:
+    """Simulates all the events.
+
+    Parameters
+    ----------
+    data : dict
+        Athletes marks of each event and gender
+    competition : CompetitionData
+        Contains the data of the competition
+    top : int, optional
+        Number of positions in the result to log
+    times : int, optional
+        Number of times to do the simulation
+    models_folder : str, optional
+        The folder where to store the models created or from where to load them  
+    override_models : bool, optional
+        True if old models want to be loaded
+    only : List[str], optional
+        Contains the events that are going to be simulated
+    logs : bool, optional
+        True if logs want to be shown
+
+    Returns
+    -------
+    dict
+        The final result of the simulation for each event and gender
+    """
+
     predictions = {}
     
     for event in competition.events:
@@ -145,33 +176,37 @@ def simulate_all_events(data: dict, competition: CompetitionData, top: int = 3, 
             continue
         
         predictions[event] = {}
-        event_name = competition.get_event_data(event)['name']
-        
         for sex in competition.get_event_data(event)['sex']:            
             if sex not in data[event]:
                 if logs:
-                    print(f"[WARNING] '{sex}' data for event '{event_name}' not found")
+                    print(f"[WARNING] '{sex}' data for event '{event}' not found")
                 continue
             
             result = simulate_event(
-                data = data[event][sex], 
-                event = event, 
-                sex = sex, 
+                data=data[event][sex], 
+                event=event, 
+                sex=sex, 
                 competition=competition,
-                times = times, 
-                models_folder='models',
-                override_models = True,
-                logs = logs)
+                times=times, 
+                models_folder=models_folder,
+                override_models=override_models,
+                logs=logs)
             
             if logs:
                 if not result:
                     print('Simulation failed')
                     continue
                 
-                print(f'Resuts:')
+                print(f'Results:')
                 for i, name in enumerate(result[:top]):
                     print(f'{i + 1:>3}: {name}')
         
             predictions[event][sex] = result
 
     return predictions
+
+
+__all__ = [
+    simulate_event,
+    simulate_all_events,
+]

@@ -1,7 +1,7 @@
 import json
 from typing import List, Tuple
 from datetime import datetime
-from competition_data import CompetitionData
+from src.competition_data import CompetitionData
 
 
 def _format_event_result(result: List[str], is_group: bool, top: int) -> dict:

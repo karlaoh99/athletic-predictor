@@ -1,15 +1,15 @@
 from ConfigSpace import ConfigurationSpace
 from ConfigSpace.hyperparameters import UniformFloatHyperparameter, UniformIntegerHyperparameter, OrdinalHyperparameter
-from simulator import simulate_event
 from smac.facade.smac_bb_facade import SMAC4BB
 from smac.scenario.scenario import Scenario
 
 from typing import List, Callable
 import numpy as np
 
-from competition_data import CompetitionData
-from ponderator import ponderate_event
-from simulator import simulate_event
+from src.simulator import simulate_event
+from src.competition_data import CompetitionData
+from src.ponderator import ponderate_event
+from src.simulator import simulate_event
 
 
 class SMAC4BBOptimizer:
@@ -29,7 +29,6 @@ class SMAC4BBOptimizer:
             max = np.max(results.Result.to_list() + [max])
         half_range = (max - min) / 2
 
-        # configspace.add_hyperparameter(UniformFloatHyperparameter('bandwidth', lower=0.1, upper=5, log=False))
         configspace.add_hyperparameter(OrdinalHyperparameter('bandwidth', sequence=np.linspace(1e-3, half_range, self.runcount)))
 
         # Hyperparameter Number of Simulations
@@ -63,7 +62,7 @@ class SMAC4BBOptimizer:
             # pond_times[year] = config['y0']
             # pond_times[year-1] = config['y1']
             # pond_times[year-2] = config['y2']
-            print(config['bandwidth'])
+            
             competition.set_event_param(event, sex, 'bw', config['bandwidth'])
             competition.set_event_param(event, sex, 'sim_times', 1000)
 

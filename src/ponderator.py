@@ -1,20 +1,22 @@
 import pandas as pd
-from competition_data import CompetitionData
+from src.competition_data import CompetitionData
 
 
-def ponderate_all_events(data: dict, competition: CompetitionData, years_weight: dict, alpha: int = 0) -> dict:
+def ponderate_all_events(data: dict, competition: CompetitionData, years_weight: dict, alpha: int = 0, logs: bool = False) -> dict:
     """Transforms data according to parameters years_weight and alpha.
 
     Parameters
     ----------
     data : dict
-        Athletes marks for each event and genders
+        Athletes marks for each event and gender
     competition : CompetitionData
         Contains the data of the competition
     years_weight : dict
         A dictionary with the years to be taken and its weight
     alpha : int, optional
         Alpha value involved in the experience of athletes
+    logs : bool, optional
+        True if logs want to be shown
 
     Returns
     -------
@@ -42,24 +44,26 @@ def ponderate_all_events(data: dict, competition: CompetitionData, years_weight:
 
         for sex in data[event]:
             alpha = competition.get_event_param(event, sex, 'alpha', alpha)
-            pond_data[event][sex] = ponderate_event(data[event][sex], maximize, years_weight, alpha)
+            pond_data[event][sex] = ponderate_event(data[event][sex], maximize, years_weight, alpha, logs)
         
     return pond_data
 
 
-def ponderate_event(data: dict, maximize: bool, years_weight: dict, alpha: int) -> dict:
+def ponderate_event(data: dict, maximize: bool, years_weight: dict, alpha: int, logs: bool = False) -> dict:
     """Transforms an event data according to parameters years_weight and alpha.
 
     Parameters
     ----------
     data : dict
-        Athletes marks for each event and genders
+        Athletes marks of an event and gender
     maximize : bool
         True if the goal of the event is to maximize the result
     years_weight : dict
         A dictionary with the years to be taken and its weight
-    alpha : int, optional
+    alpha : int
         Alpha value involved in the experience of athletes
+    logs : bool, optional
+        True if logs want to be shown
 
     Returns
     -------
@@ -73,7 +77,7 @@ def ponderate_event(data: dict, maximize: bool, years_weight: dict, alpha: int) 
         pond_marks = ponderate_marks(df, maximize, years_weight, alpha)
         if pond_marks is not None:
             pond_data[athlete] = pond_marks
-        else:
+        elif logs:
             print(f"WARNING: Athlete {athlete} does not have any valid mark")
         
     return pond_data
@@ -90,7 +94,7 @@ def ponderate_marks(marks: pd.DataFrame, maximize: bool, years_weight: dict, alp
         True if the goal of the event is to maximize the result
     years_weight : dict
         A dictionary with the years to be taken and its weight
-    alpha : int, optional
+    alpha : int
         Alpha value involved in the experience of athletes
 
     Returns

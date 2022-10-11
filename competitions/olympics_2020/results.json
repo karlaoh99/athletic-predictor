@@ -1,0 +1,480 @@
+{
+    "atl_100m": {
+        "female": {
+            "1": "JAM_elaine_thompson-herah",
+            "2": "JAM_shelly-ann_fraser-pryce",
+            "3": "JAM_shericka_jackson",
+            "4": "CIV_marie-josée_ta_lou",
+            "5": "SUI_ajla_del_ponte",
+            "6": "SUI_mujinga_kambundji",
+            "7": "USA_teahna_daniels",
+            "8": "GBR_daryll_neita"
+        },
+        "male": {
+            "1": "ITA_lamont_marcell_jacobs",
+            "2": "USA_fred_kerley",
+            "3": "CAN_andré_de_grasse",
+            "4": "RSA_akani_simbine",
+            "5": "USA_ronnie_baker",
+            "6": "CHN_bingtian_su",
+            "7": "NGR_enoch_adegoke",
+            "8": "GBR_zharnel_hughes"
+        }
+    },
+    "atl_200m": {
+        "female": {
+            "1": "JAM_elaine_thompson-herah",
+            "2": "NAM_christine_mboma",
+            "3": "USA_gabrielle_thomas",
+            "4": "JAM_shelly-ann_fraser-pryce",
+            "5": "CIV_marie-josée_ta_lou",
+            "6": "NAM_beatrice_masilingi",
+            "7": "SUI_mujinga_kambundji",
+            "8": "BAH_shaunae_miller-uibo"
+        },
+        "male": {
+            "1": "CAN_andré_de_grasse",
+            "2": "USA_kenneth_bednarek",
+            "3": "USA_noah_lyles",
+            "4": "USA_erriyon_knighton",
+            "5": "LBR_joseph_fahnbulleh",
+            "6": "CAN_aaron_brown",
+            "7": "JAM_rasheed_dwyer",
+            "8": "TTO_jereem_richards"
+        }
+    },
+    "atl_400m": {
+        "female": {
+            "1": "BAH_shaunae_miller-uibo",
+            "2": "DOM_marileidy_paulino",
+            "3": "USA_allyson_felix",
+            "4": "JAM_stephenie_ann_mcpherson",
+            "5": "JAM_candice_mcleod",
+            "6": "GBR_jodie_williams",
+            "7": "USA_quanera_hayes",
+            "8": "CUB_roxana_gómez"
+        },
+        "male": {
+            "1": "BAH_steven_gardiner",
+            "2": "COL_anthony_josé_zambrano",
+            "3": "GRN_kirani_james",
+            "4": "USA_michael_cherry",
+            "5": "USA_michael_norman",
+            "6": "JAM_christopher_taylor",
+            "7": "BOT_isaac_makwala",
+            "8": "NED_liemarvin_bonevacia"
+        }
+    },
+    "atl_800m": {
+        "female": {
+            "1": "USA_athing_mu",
+            "2": "GBR_keely_hodgkinson",
+            "3": "USA_raevyn_rogers",
+            "4": "GBR_jemma_reekie",
+            "5": "CHN_chunyu_wang",
+            "6": "ETH_habitam_alemu",
+            "7": "GBR_alexandra_bell",
+            "8": "JAM_natoya_goule"
+        },
+        "male": {
+            "1": "KEN_emmanuel_kipkurui_korir",
+            "2": "KEN_ferguson_cheruiyot_rotich",
+            "3": "POL_patryk_dobek",
+            "4": "AUS_peter_bol",
+            "5": "ESP_adrián_ben",
+            "6": "BIH_amel_tuka",
+            "7": "FRA_gabriel_tual",
+            "8": "BOT_nijel_amos"
+        }
+    },
+    "atl_1500m": {
+        "female": {
+            "1": "KEN_faith_kipyegon",
+            "2": "GBR_laura_muir",
+            "3": "NED_sifan_hassan",
+            "4": "ETH_freweyni_gebreezibeher",
+            "5": "CAN_gabriela_debues-stafford",
+            "6": "AUS_linden_hall",
+            "7": "UGA_winnie_nanyondo",
+            "8": "JPN_nozomi_tanaka"
+        },
+        "male": {
+            "1": "NOR_jakob_ingebrigtsen",
+            "2": "KEN_timothy_cheruiyot",
+            "3": "GBR_josh_kerr",
+            "4": "KEN_abel_kipsang",
+            "5": "ESP_adel_mechaal",
+            "6": "USA_cole_hocker",
+            "7": "AUS_stewart_mcsweyn",
+            "8": "POL_michał_rozmys"
+        }
+    },
+    "atl_5000m": {
+        "female": {
+            "1": "NED_sifan_hassan",
+            "2": "KEN_hellen_obiri",
+            "3": "ETH_gudaf_tsegay",
+            "4": "KEN_agnes_jebet_tirop",
+            "5": "ETH_ejgayehu_taye",
+            "6": "ETH_senbere_teferi",
+            "7": "ITA_nadia_battocletti",
+            "8": "TUR_yasemin_can"
+        },
+        "male": {
+            "1": "UGA_joshua_cheptegei",
+            "2": "CAN_mohammed_ahmed",
+            "3": "USA_paul_chelimo",
+            "4": "KEN_nicholas_kipkorir_kimeli",
+            "5": "UGA_jacob_kiplimo",
+            "6": "BRN_birhanu_balew",
+            "7": "CAN_justyn_knight",
+            "8": "ESP_mohamed_katir"
+        }
+    },
+    "atl_10000m": {
+        "female": {
+            "1": "NED_sifan_hassan",
+            "2": "BRN_kalkidan_gezahegne",
+            "3": "ETH_letesenbet_gidey",
+            "4": "KEN_hellen_obiri",
+            "5": "BDI_francine_niyonsaba",
+            "6": "KEN_irene_chebet_cheptai",
+            "7": "JPN_ririka_hironaka",
+            "8": "GER_konstanze_klosterhalfen"
+        },
+        "male": {
+            "1": "ETH_selemon_barega",
+            "2": "UGA_joshua_cheptegei",
+            "3": "UGA_jacob_kiplimo",
+            "4": "ETH_berihu_aregawi",
+            "5": "USA_grant_fisher",
+            "6": "CAN_mohammed_ahmed",
+            "7": "KEN_rodgers_kwemoi",
+            "8": "ETH_yomif_kejelcha"
+        }
+    },    
+    "atl_100v": {
+        "female": {
+            "1": "PUR_jasmine_camacho-quinn",
+            "2": "USA_kendra_harrison",
+            "3": "JAM_megan_tapper",
+            "4": "NGR_tobi_amusan",
+            "5": "NED_nadine_visser",
+            "6": "BAH_devynne_charlton",
+            "7": "USA_gabriele_cunningham",
+            "8": "JAM_britany_anderson"
+        }
+    },
+    "atl_110v": {
+        "male": {
+            "1": "JAM_hansle_parchment",
+            "2": "USA_grant_holloway",
+            "3": "JAM_ronald_levy",
+            "4": "USA_devon_allen",
+            "5": "FRA_pascal_martinot-lagarde",
+            "6": "ESP_asier_martínez",
+            "7": "GBR_andrew_pozzi",
+            "8": "FRA_aurel_manga"
+        }
+    },
+    "atl_400v": {
+        "female": {
+            "1": "USA_sydney_mclaughlin",
+            "2": "USA_dalilah_muhammad",
+            "3": "NED_femke_bol",
+            "4": "JAM_janieve_russell",
+            "5": "UKR_anna_ryzhykova",
+            "6": "UKR_viktoriya_tkachuk",
+            "7": "PAN_gianna_woodruff",
+            "8": "USA_anna_cockrell"
+        },
+        "male": {
+            "1": "NOR_karsten_warholm",
+            "2": "USA_rai_benjamin",
+            "3": "BRA_alison_dos_santos",
+            "4": "IVB_kyron_mcmaster",
+            "5": "QAT_abderrahman_samba",
+            "6": "TUR_yasmani_copello",
+            "7": "EST_rasmus_mägi",
+            "8": "ITA_alessandro_sibilio"
+        }
+    },
+    "atl_3000m": {
+        "female": {
+            "1": "UGA_peruth_chemutai",
+            "2": "USA_courtney_frerichs",
+            "3": "KEN_hyvin_kiyeng",
+            "4": "ETH_mekides_abebe",
+            "5": "GER_gesa_felicitas_krause",
+            "6": "SLO_maruša_mišmaš-zrimšek",
+            "7": "KEN_beatrice_chepkoech",
+            "8": "ETH_zerfe_wondemagegn"
+        },
+        "male": {
+            "1": "MAR_soufiane_el_bakkali",
+            "2": "ETH_lamecha_girma",
+            "3": "KEN_benjamin_kigen",
+            "4": "ETH_getnet_wale",
+            "5": "ERI_yemane_haileselassie",
+            "6": "CAN_matthew_hughes",
+            "7": "JPN_ryuji_miura",
+            "8": "FIN_topi_raitanen"
+        }
+    },
+    "atl_alt": {
+        "female": {
+            "1": "ANA_mariya_lasitskene",
+            "2": "AUS_nicola_mcdermott",
+            "3": "UKR_yaroslava_mahuchikh",
+            "4": "UKR_iryna_gerashchenko",
+            "5": "AUS_eleanor_patterson",
+            "6": "USA_vashti_cunningham",
+            "7": "UZB_safina_sadullayeva",
+            "8": "UKR_yuliya_levchenko"
+        },
+        "male": {
+            "1": "QAT_mutaz_essa_barshim",
+            "2": "ITA_gianmarco_tamberi",
+            "3": "BLR_maksim_nedasekau",
+            "4": "KOR_sanghyeok_woo",
+            "5": "AUS_brandon_starc",
+            "6": "ANA_mikhail_akimenko",
+            "7": "USA_juvaughn_harrison",
+            "8": "CAN_django_lovett"
+        }
+    },
+    "atl_per": {
+        "female": {
+            "1": "USA_katie_nageotte",
+            "2": "ANA_anzhelika_sidorova",
+            "3": "GBR_holly_bradshaw",
+            "4": "GRE_katerina_stefanidi",
+            "5": "UKR_maryna_kylypko",
+            "6": "FIN_wilma_murto",
+            "7": "SLO_tina_šutej",
+            "8": "GRE_nikoleta_kyriakopoulou"
+        },
+        "male": {
+            "1": "SWE_armand_duplantis",
+            "2": "USA_christopher_nilsen",
+            "3": "BRA_thiago_braz",
+            "4": "GRE_emmanouil_karalis",
+            "5": "USA_kc_lightfoot",
+            "6": "POL_piotr_lisek",
+            "7": "GBR_harry_coppell",
+            "8": "FRA_renaud_lavillenie"
+        }
+    },
+    "atl_lar": {
+        "female": {
+            "1": "GER_malaika_mihambo",
+            "2": "USA_brittney_reese",
+            "3": "NGR_ese_brume",
+            "4": "SRB_ivana_španović",
+            "5": "UKR_maryna_bekh-romanchuk",
+            "6": "USA_tara_davis",
+            "7": "AUS_brooke_stratton",
+            "8": "GBR_jazmin_sawyers"
+        },
+        "male": {
+            "1": "GRE_miltiadis_tentoglou",
+            "2": "CUB_juan_miguel_echevarría",
+            "3": "CUB_maykel_massó",
+            "4": "ESP_eusebio_cáceres",
+            "5": "USA_juvaughn_harrison",
+            "6": "JPN_yuki_hashioka",
+            "7": "SWE_thobias_montler",
+            "8": "ITA_filippo_randazzo"
+        }
+    },
+    "atl_tri": {
+        "female": {
+            "1": "VEN_yulimar_rojas",
+            "2": "POR_patrícia_mamona",
+            "3": "ESP_ana_peleteiro",
+            "4": "JAM_shanieka_ricketts",
+            "5": "CUB_liadagmis_povea",
+            "6": "ISR_hanna_minenko",
+            "7": "USA_keturah_orji",
+            "8": "JAM_kimberly_williams"
+        },
+        "male": {
+            "1": "POR_pedro_pichardo",
+            "2": "CHN_yaming_zhu",
+            "3": "BUR_hugues_fabrice_zango",
+            "4": "USA_will_claye",
+            "5": "ALG_yasser_mohamed_triki",
+            "6": "TUR_necati_er",
+            "7": "USA_donald_scott",
+            "8": "CHN_yaoqing_fang"
+        }
+    },
+    "atl_bal": {
+        "female": {
+            "1": "CHN_lijiao_gong",
+            "2": "USA_raven_saunders",
+            "3": "NZL_valerie_adams",
+            "4": "POR_auriol_dongmo",
+            "5": "CHN_jiayuan_song",
+            "6": "NZL_maddison-lee_wesche",
+            "7": "SWE_fanny_roos",
+            "8": "GER_sara_gambetta"
+        },
+        "male": {
+            "1": "USA_ryan_crouser",
+            "2": "USA_joe_kovacs",
+            "3": "NZL_tomas_walsh",
+            "4": "BRA_darlan_romani",
+            "5": "ITA_zane_weir",
+            "6": "RSA_kyle_blignaut",
+            "7": "SRB_armin_sinančević",
+            "8": "EGY_mostafa_amr_hassan"
+        }
+    },
+    "atl_dis": {
+        "female": {
+            "1": "USA_valarie_allman",
+            "2": "GER_kristin_pudenz",
+            "3": "CUB_yaimé_pérez",
+            "4": "CRO_sandra_perković",
+            "5": "POR_liliana_cá",
+            "6": "IND_kamalpreet_kaur",
+            "7": "JAM_shadae_lawrence",
+            "8": "GER_marike_steinacker"
+        },
+        "male": {
+            "1": "SWE_daniel_ståhl",
+            "2": "SWE_simon_pettersson",
+            "3": "AUT_lukas_weisshaidinger",
+            "4": "AUS_matthew_denny",
+            "5": "SLO_kristjan_čeh",
+            "6": "LTU_andrius_gudžius",
+            "7": "COL_mauricio_ortega",
+            "8": "USA_sam_mattis"
+        }
+    },
+    "atl_mar": {
+        "female": {
+            "1": "POL_anita_włodarczyk",
+            "2": "CHN_zheng_wang",
+            "3": "POL_malwina_kopron",
+            "4": "FRA_alexandra_tavernier",
+            "5": "CAN_camryn_rogers",
+            "6": "ROU_bianca_florentina_ghelber",
+            "7": "POL_joanna_fiodorow",
+            "8": "USA_deanna_price"
+        },
+        "male": {
+            "1": "POL_wojciech_nowicki",
+            "2": "NOR_eivind_henriksen",
+            "3": "POL_paweł_fajdek",
+            "4": "UKR_mykhaylo_kokhan",
+            "5": "FRA_quentin_bigot",
+            "6": "GBR_nick_miller",
+            "7": "USA_rudy_winkler",
+            "8": "ANA_valeriy_pronkin"
+        }
+    },
+    "atl_jab": {
+        "female": {
+            "1": "CHN_shiying_liu",
+            "2": "POL_maria_andrejczyk",
+            "3": "AUS_kelsey-lee_barber",
+            "4": "TUR_eda_tuğsuz",
+            "5": "CHN_huihui_lyu",
+            "6": "AUS_kathryn_mitchell",
+            "7": "LTU_liveta_jasiūnaitė",
+            "8": "AUS_mackenzie_little"
+        },
+        "male": {
+            "1": "IND_neeraj_chopra",
+            "2": "CZE_jakub_vadlejch",
+            "3": "CZE_vítězslav_veselý",
+            "4": "GER_julian_weber",
+            "5": "PAK_arshad_nadeem",
+            "6": "BLR_aliaksei_katkavets",
+            "7": "MDA_andrian_mardare",
+            "8": "FIN_lassi_etelätalo"
+        }
+    },
+    "atl_mat": {
+        "female": {
+            "1": "KEN_peres_jepchirchir",
+            "2": "KEN_brigid_kosgei",
+            "3": "USA_molly_seidel",
+            "4": "ETH_roza_dereje",
+            "5": "BLR_volha_mazuronak",
+            "6": "GER_melat_yisak_kejeta",
+            "7": "BRN_eunice_chebichii_chumba",
+            "8": "JPN_mao_ichiyama"
+        },
+        "male": {
+            "1": "KEN_eliud_kipchoge",
+            "2": "NED_abdi_nageeye",
+            "3": "BEL_bashir_abdi",
+            "4": "KEN_lawrence_cherono",
+            "5": "ESP_ayad_lamdassem",
+            "6": "JPN_suguru_osako",
+            "7": "TAN_alphonce_felix_simbu",
+            "8": "USA_galen_rupp"
+        }
+    },
+    "atl_20km": {
+        "female": {
+            "1": "ITA_antonella_palmisano",
+            "2": "COL_sandra_lorena_arenas",
+            "3": "CHN_hong_liu",
+            "4": "ESP_maría_pérez",
+            "5": "MEX_alegna_gonzález",
+            "6": "AUS_jemima_montag",
+            "7": "CHN_shijie_qieyang",
+            "8": "GRE_antigoni_ntrismpioti"
+        },
+        "male": {
+            "1": "ITA_massimo_stano",
+            "2": "JPN_koki_ikeda",
+            "3": "JPN_toshikazu_yamanishi",
+            "4": "ESP_álvaro_martín",
+            "5": "GER_christopher_linke",
+            "6": "ESP_diego_garcía_carrera",
+            "7": "CHN_kaihua_wang",
+            "8": "CHN_jun_zhang"
+        }
+    },
+    "atl_50km": {
+        "male": {
+            "1": "POL_dawid_tomala",
+            "2": "GER_jonathan_hilbert",
+            "3": "CAN_evan_dunfee",
+            "4": "ESP_marc_tur",
+            "5": "POR_joão_vieira",
+            "6": "JPN_masatora_kawano",
+            "7": "CHN_tongda_bian",
+            "8": "AUS_rhydian_cowley"
+        }
+    },
+    "atl_hep": {
+        "female": {
+            "1": "BEL_nafissatou_thiam",
+            "2": "NED_anouk_vetter",
+            "3": "NED_emma_oosterwegel",
+            "4": "BEL_noor_vidts",
+            "5": "USA_kendell_williams",
+            "6": "USA_annie_kunz",
+            "7": "GER_carolin_schäfer",
+            "8": "AUT_ivona_dadic"
+        }
+    },
+    "atl_dec": {
+        "male": {
+            "1": "CAN_damian_warner",
+            "2": "FRA_kevin_mayer",
+            "3": "AUS_ashley_moloney",
+            "4": "USA_garrett_scantling",
+            "5": "CAN_pierce_lepage",
+            "6": "USA_zachery_ziemek",
+            "7": "GRN_lindon_victor",
+            "8": "ANA_ilya_shkurenyov"
+        }
+    }
+}

@@ -143,18 +143,18 @@ events = {
         'maximize': True,
         'in_group': False,
     },
-    'atl_4x100m': {
-        'name': 'Relevo 4x100 metros planos',
-        'sex': ['male', 'female'],
-        'maximize': False,
-        'in_group': True,
-    },
-    'atl_4x400m': {
-        'name': 'Relevo 4x400 metros planos',
-        'sex': ['male', 'female', 'mixed'],
-        'maximize': False,
-        'in_group': True,
-    },
+    # 'atl_4x100m': {
+    #     'name': 'Relevo 4x100 metros planos',
+    #     'sex': ['male', 'female'],
+    #     'maximize': False,
+    #     'in_group': True,
+    # },
+    # 'atl_4x400m': {
+    #     'name': 'Relevo 4x400 metros planos',
+    #     'sex': ['male', 'female', 'mixed'],
+    #     'maximize': False,
+    #     'in_group': True,
+    # },
 }
 
 

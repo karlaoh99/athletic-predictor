@@ -1,7 +1,10 @@
+from datetime import datetime
+
+
 class CompetitionData:
     """Represents a competition, storing the data of the events."""
 
-    def __init__(self, name: str, events_data: dict, events_params: dict = {}, entry_list: dict = None):
+    def __init__(self, name: str, events_data: dict, events_params: dict = {}, start_date: datetime = None, entry_list: dict = None):
         """
         Parameters
         ----------
@@ -31,6 +34,8 @@ class CompetitionData:
                 },
                 ...
             }
+        start_date : datetime, optional
+            Date when the competition starts
         entry_list : dict, optional
             A dictionary that stores for each event and gender a list of the athletes names 
             that will participate in the competition. Example:
@@ -52,6 +57,7 @@ class CompetitionData:
         self._entry_list = entry_list
         self.events = [n for n in events_data.keys()]
         self.name = name
+        self.start_date = start_date
 
     def _check_valid_event(self, event: str) -> None:
         if event not in self.events:

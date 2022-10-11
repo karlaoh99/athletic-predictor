@@ -152,6 +152,18 @@
             "7": "ETH_berihu_aregawi",
             "8": "KEN_daniel_mateiko"
         }
+    },    
+    "atl_100v": {
+        "female": {
+            "1": "NGR_tobi_amusan",
+            "2": "JAM_britany_anderson",
+            "3": "PUR_jasmine_camacho-quinn",
+            "4": "USA_alia_armstrong",
+            "5": "GBR_cindy_sember",
+            "6": "JAM_danielle_williams",
+            "7": "JAM_megan_tapper",
+            "8": "USA_kendra_harrison"
+        }
     },
     "atl_110v": {
         "male": {
@@ -163,18 +175,6 @@
             "6": "BAR_shane_brathwaite",
             "7": "USA_devon_allen",
             "8": "JAM_hansle_parchment"
-        }
-    },
-    "atl_100v": {
-        "female": {
-            "1": "NGR_tobi_amusan",
-            "2": "JAM_britany_anderson",
-            "3": "PUR_jasmine_camacho-quinn",
-            "4": "USA_alia_armstrong",
-            "5": "GBR_cindy_sember",
-            "6": "JAM_danielle_williams",
-            "7": "JAM_megan_tapper",
-            "8": "USA_kendra_harrison"
         }
     },
     "atl_400v": {
@@ -397,6 +397,28 @@
             "8": "FIN_oliver_helander"
         }
     },
+    "atl_mat": {
+        "female": {
+            "1": "ETH_gotytom_gebreslase",
+            "2": "KEN_judith_jeptum_korir",
+            "3": "ISR_lonah_chemtai_salpeter",
+            "4": "ERI_nazret_weldu",
+            "5": "USA_sara_hall",
+            "6": "KEN_angela_tanui",
+            "7": "USA_emma_bates",
+            "8": "USA_keira_d'amato"
+        },
+        "male": {
+            "1": "ETH_tamirat_tola",
+            "2": "ETH_mosinet_geremew",
+            "3": "BEL_bashir_abdi",
+            "4": "CAN_cameron_levins",
+            "5": "KEN_geoffrey_kamworor",
+            "6": "ETH_seifu_tura",
+            "7": "TAN_gabriel_gerald_geay",
+            "8": "BRA_daniel_do_nascimento"
+        }
+    },
     "atl_20km": {
         "female": {
             "1": "PER_kimberly_garcía_león",
@@ -439,28 +461,6 @@
             "6": "ESP_laura_garcía-caro",
             "7": "CHN_maocuo_li",
             "8": "BRA_viviane_lyra"
-        }
-    },
-    "atl_mat": {
-        "female": {
-            "1": "ETH_gotytom_gebreslase",
-            "2": "KEN_judith_jeptum_korir",
-            "3": "ISR_lonah_chemtai_salpeter",
-            "4": "ERI_nazret_weldu",
-            "5": "USA_sara_hall",
-            "6": "KEN_angela_tanui",
-            "7": "USA_emma_bates",
-            "8": "USA_keira_d'amato"
-        },
-        "male": {
-            "1": "ETH_tamirat_tola",
-            "2": "ETH_mosinet_geremew",
-            "3": "BEL_bashir_abdi",
-            "4": "CAN_cameron_levins",
-            "5": "KEN_geoffrey_kamworor",
-            "6": "ETH_seifu_tura",
-            "7": "TAN_gabriel_gerald_geay",
-            "8": "BRA_daniel_do_nascimento"
         }
     },
     "atl_hep": {
