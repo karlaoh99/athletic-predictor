@@ -52,7 +52,7 @@ class SMAC4BBOptimizer:
         best_found_config = smac.optimize()
         
         return best_found_config
-
+        
     def _get_train_kde(self, x_train: dict, y_train: List[str], event: str, sex: str, competition: CompetitionData):
         def train_kde(config):
             # pond_times = {}
@@ -66,11 +66,7 @@ class SMAC4BBOptimizer:
             competition.set_event_param(event, sex, 'bw', config['bandwidth'])
             competition.set_event_param(event, sex, 'sim_times', 1000)
 
-            pond_times = {
-            2022: 4,
-            2021: 2,
-            2020: 1,
-            }
+            pond_times = {competition.start_date.year - i : int(4 / (i+1)) for i in range(3)}
             
             pond_data = ponderate_event(
                 data=x_train, 
@@ -131,27 +127,3 @@ def calculate_error3(result, prediction):
             continue
 
     return e
-
-
-def create_dataset(data: dict):
-    # Takes the last result obtain for each athlete to y_train and the rest to x_train
-    
-    x_train = {}
-    y_train = {}
-    for event in data:
-        x_train[event] = {}
-        y_train[event] = {}
-        
-        for sex in data[event]:
-            x_train[event][sex] = []
-            y_train[event][sex] = []
-
-            for _, df in data[event][sex].items():
-                marks = df.Result.array 
-
-                # If the athlete have less than 2 results it is not taken in account to the dataset
-                if len(marks) > 1:
-                    x_train[event][sex].append(df.iloc[1:])
-                    y_train[event][sex].append(df.iloc[0].Result)
-    
-    return x_train, y_train
