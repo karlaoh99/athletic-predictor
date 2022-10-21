@@ -14,7 +14,7 @@ def ponderate_all_events(data: dict, competition: CompetitionData, years_weight:
     years_weight : dict
         A dictionary with the years to be taken and its weight
     alpha : int, optional
-        Alpha value involved in the experience of athletes
+        Alpha default value involved in the experience of athletes
     logs : bool, optional
         True if logs want to be shown
 
@@ -126,7 +126,7 @@ def ponderate_marks(marks: pd.DataFrame, maximize: bool, years_weight: dict, alp
         df_marks = pd.DataFrame(pond_marks)
         pond_val = 1 + alpha / len(pond_marks)
         df_marks.Result *= pond_val
-            
+        
         return df_marks
 
     return None

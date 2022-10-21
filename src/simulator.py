@@ -98,11 +98,11 @@ def simulate_event(data: dict, event: str, sex: str, competition: CompetitionDat
     competition : CompetitionData
         Contains the data of the competition
     times : int
-        Number of times to do the simulation
+        Default number of times to do the simulation
     models_folder : str, optional
         The folder where to store the models created or from where to load them  
     override_models : bool, optional
-        True if old models want to be loaded
+        False if old models want to be loaded
     logs : bool, optional
         True if logs want to be shown
 
@@ -112,7 +112,7 @@ def simulate_event(data: dict, event: str, sex: str, competition: CompetitionDat
         The final result of the simulation
     """
 
-    bandwidth = competition.get_event_param(event, sex, 'bw', 1)
+    bandwidth = competition.get_event_param(event, sex, 'bandwidth', 1)
     sim_times = competition.get_event_param(event, sex, 'sim_times', times)
 
     if models_folder is not None:
@@ -148,11 +148,11 @@ def simulate_all_events(data: dict, competition: CompetitionData, top: int = 3, 
     top : int, optional
         Number of positions in the result to log
     times : int, optional
-        Number of times to do the simulation
+        Default number of times to do the simulation
     models_folder : str, optional
         The folder where to store the models created or from where to load them  
     override_models : bool, optional
-        True if old models want to be loaded
+        False if old models want to be loaded
     only : List[str], optional
         Contains the events that are going to be simulated
     logs : bool, optional
@@ -176,7 +176,7 @@ def simulate_all_events(data: dict, competition: CompetitionData, top: int = 3, 
             continue
         
         predictions[event] = {}
-        for sex in competition.get_event_data(event)['sex']:            
+        for sex in competition.get_event_data(event, 'sex'):            
             if sex not in data[event]:
                 if logs:
                     print(f"[WARNING] '{sex}' data for event '{event}' not found")

@@ -81,11 +81,11 @@ class CompetitionData:
         self._check_valid_event(event)
         return (self._entry_list is None) or (athlete.casefold() in self._entry_list[event][sex])
 
-    def get_event_data(self, event: str) -> dict:
+    def get_event_data(self, event: str, param: str):
         """Returns the data of an event."""
         
         self._check_valid_event(event)
-        return self._events_data[event]
+        return self._events_data[event][param]
 
     def get_event_param(self, event: str, sex: str, param: str, default=None):
         """Returns the value of a specific parameter for an event."""

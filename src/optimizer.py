@@ -1,43 +1,28 @@
+import numpy as np
+from typing import List, Callable
 from ConfigSpace import ConfigurationSpace
-from ConfigSpace.hyperparameters import UniformFloatHyperparameter, UniformIntegerHyperparameter, OrdinalHyperparameter
+from ConfigSpace.hyperparameters import UniformIntegerHyperparameter, OrdinalHyperparameter
 from smac.facade.smac_bb_facade import SMAC4BB
 from smac.scenario.scenario import Scenario
-
-from typing import List, Callable
-import numpy as np
-
 from src.simulator import simulate_event
 from src.competition_data import CompetitionData
 from src.ponderator import ponderate_event
 from src.simulator import simulate_event
 
 
-class SMAC4BBOptimizer:
-    def __init__(self, runcount: int, calculate_error: Callable):
+class EventOptimizer:
+    def __init__(self, runcount: int, calculate_error: Callable, optimize_params: list, default_params: dict):
         self.runcount = runcount
         self.calculate_error = calculate_error
+        self.optimize_params = optimize_params
+        self.default_params = default_params
 
     def optimize(self, x_train: dict, y_train: List[str], event: str, sex: str, competition: CompetitionData):        
         # Define your hyperparameters
         configspace = ConfigurationSpace()
 
-        # Hyperparameter Bandwidth
-        min = 5000
-        max = 0
-        for _, results in x_train.items():
-            min = np.min(results.Result.to_list() + [min])
-            max = np.max(results.Result.to_list() + [max])
-        half_range = (max - min) / 2
-
-        configspace.add_hyperparameter(OrdinalHyperparameter('bandwidth', sequence=np.linspace(1e-3, half_range, self.runcount)))
-
-        # Hyperparameter Number of Simulations
-        # configspace.add_hyperparameter(OrdinalHyperparameter('n_sim', sequence=[str(n) for n in np.arange(500, 5001, 500)]))
-
-        # configspace.add_hyperparameter(UniformIntegerHyperparameter('n_years', lower=2, upper=5, log=False))
-        # configspace.add_hyperparameter(UniformIntegerHyperparameter('y0', lower=1, upper=8, log=False))
-        # configspace.add_hyperparameter(UniformIntegerHyperparameter('y1', lower=1, upper=8, log=False))
-        # configspace.add_hyperparameter(UniformIntegerHyperparameter('y2', lower=1, upper=8, log=False))
+        for param in self.optimize_params:
+            configspace.add_hyperparameter(self.get_hyperparameter(param, x_train))
 
         # Provide meta data for the optimization
         scenario = Scenario({
@@ -55,24 +40,19 @@ class SMAC4BBOptimizer:
         
     def _get_train_kde(self, x_train: dict, y_train: List[str], event: str, sex: str, competition: CompetitionData):
         def train_kde(config):
-            # pond_times = {}
-            # year = date.today().year
-            # # for i in range(config['n_years'], -1, -1):
-            # #     pond_times[year - i] = 2**(config['n_years']-i)
-            # pond_times[year] = config['y0']
-            # pond_times[year-1] = config['y1']
-            # pond_times[year-2] = config['y2']
-            
-            competition.set_event_param(event, sex, 'bw', config['bandwidth'])
-            competition.set_event_param(event, sex, 'sim_times', 1000)
+            bandwidth = self._get_param('bandwidth', config)
+            sim_times = int(self._get_param('sim_times', config))
+            alpha = self._get_param('alpha', config)
+            pond_times = self._get_param('pond_times', config)
 
-            pond_times = {competition.start_date.year - i : int(4 / (i+1)) for i in range(3)}
-            
+            competition.set_event_param(event, sex, 'bandwidth', bandwidth)
+            competition.set_event_param(event, sex, 'sim_times', sim_times)
+
             pond_data = ponderate_event(
                 data=x_train, 
                 maximize=competition.is_maximize_event(event), 
                 years_weight=pond_times,
-                alpha=0
+                alpha=alpha
             )
 
             sim_result = simulate_event(
@@ -80,7 +60,7 @@ class SMAC4BBOptimizer:
                 event=event, 
                 sex=sex,
                 competition=competition,
-                times= 1000,
+                times=sim_times,
                 models_folder='models',
                 override_models=True, 
             )
@@ -89,8 +69,105 @@ class SMAC4BBOptimizer:
 
         return train_kde
 
+    def _get_param(self, param: str, config):
+        if param in config:
+            return config[param]
+        else:
+            return self.default_params[param]
+
+    def get_hyperparameter(self, param: str, x_train):
+        if param == 'bandwidth':
+            min = 10000
+            max = 0
+            for _, results in x_train.items():
+                min = np.min(results.Result.to_list() + [min])
+                max = np.max(results.Result.to_list() + [max])
+            half_range = (max - min) / 2
+
+            return OrdinalHyperparameter('bandwidth', sequence=np.linspace(1e-3, half_range, self.runcount))
+
+        if param == 'sim_times':
+            return OrdinalHyperparameter('sim_times', sequence=[str(n) for n in np.arange(1000, 10001, 1000)])
+
+        if param == 'alpha':
+            return OrdinalHyperparameter('alpha', sequence=np.linspace(0, 0.99, self.runcount))
+
+
+class PondYearsOptimizer:
+    def __init__(self, runcount: int, calculate_error: Callable):
+        self.runcount = runcount
+        self.calculate_error = calculate_error
+
+    def optimize(self, x_train: dict, y_train: List[str], competition: CompetitionData):        
+        # Define your hyperparameters
+        configspace = ConfigurationSpace()
+
+        configspace.add_hyperparameter(UniformIntegerHyperparameter('y0', lower=1, upper=8, log=False))
+        configspace.add_hyperparameter(UniformIntegerHyperparameter('y1', lower=1, upper=8, log=False))
+        configspace.add_hyperparameter(UniformIntegerHyperparameter('y2', lower=1, upper=8, log=False))
+
+        # Provide meta data for the optimization
+        scenario = Scenario({
+            "run_obj": "quality",   # Optimize quality (alternatively runtime)
+            "runcount-limit": self.runcount,   # Max number of function evaluations (the more the better)
+            "cs": configspace,
+        })
+
+        train_kde = self._get_train_kde(x_train, y_train, competition)
+
+        smac = SMAC4BB(scenario=scenario, tae_runner=train_kde)
+        best_found_config = smac.optimize()
+        
+        return best_found_config
+        
+    def _get_train_kde(self, x_train: dict, y_train: List[str], competition: CompetitionData):
+        def train_kde(config):
+            
+            pond_times = {}
+            year = competition.start_date.year
+            pond_times[year] = config['y0']
+            pond_times[year-1] = config['y1']
+            pond_times[year-2] = config['y2']
+
+            if config['y0'] < config['y1'] or config['y1'] < config['y2']:
+                return 10000
+
+            print(pond_times)
+            
+            error = 0
+            for event in competition.events:
+                for sex in competition.get_event_data(event, 'sex'):
+                    x = x_train[event][sex]
+                    y = list(y_train[event][sex].values())
+
+                    pond_data = ponderate_event(
+                        data=x, 
+                        maximize=competition.is_maximize_event(event), 
+                        years_weight=pond_times,
+                        alpha=competition.get_event_param(event, sex, 'alpha', 0)
+                    )
+
+                    sim_result = simulate_event(
+                        data=pond_data, 
+                        event=event, 
+                        sex=sex,
+                        competition=competition,
+                        times=1000,
+                        models_folder='models',
+                        override_models=True, 
+                    )
+
+                    error += self.calculate_error(y, sim_result) 
+
+            return error    
+
+        return train_kde
+
 
 def calculate_error1(result, prediction):
+    # Adds all the times an athlete is in the actual result 
+    # and an athlete is in the exact position
+    
     acc = 0
     for i in range(8):
         if prediction[i] in result:
@@ -102,6 +179,9 @@ def calculate_error1(result, prediction):
 
 
 def calculate_error2(result, prediction):
+    # Adds the number of positions difference between 
+    # the actual result and the predicted one
+
     e = 0
     for r_index, name in enumerate(result):
         try:
@@ -114,6 +194,9 @@ def calculate_error2(result, prediction):
 
 
 def calculate_error3(result, prediction):
+    # For each athlete adds all the athletes who were above 
+    # him in the prediction and not in the real result
+
     e = 0
     above = []
     for name in result:

@@ -68,7 +68,7 @@ def save_prediction(results: dict, competition: CompetitionData, top: int = 3, f
         if not event in predictions:
             predictions[event] = {}
             predictions[event]['sex'] = {}
-            predictions[event]['name'] = competition.get_event_data(event)['name']
+            predictions[event]['name'] = competition.get_event_data(event, 'name')
 
         for sex in results[event]:
             predictions[event]['sex'][sex] = _format_event_result(results[event][sex], competition.is_event_in_group(event), top)
