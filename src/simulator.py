@@ -207,6 +207,6 @@ def simulate_all_events(data: dict, competition: CompetitionData, top: int = 3, 
 
 
 __all__ = [
-    simulate_event,
-    simulate_all_events,
+    "simulate_event",
+    "simulate_all_events",
 ]

@@ -133,7 +133,7 @@ def ponderate_marks(marks: pd.DataFrame, maximize: bool, years_weight: dict, alp
 
 
 __all__ = [
-    ponderate_all_events,
-    ponderate_event,
-    ponderate_marks,
+    "ponderate_all_events",
+    "ponderate_event",
+    "ponderate_marks",
 ]

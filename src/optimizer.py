@@ -1,3 +1,4 @@
+import sys
 import numpy as np
 from typing import List, Callable
 from ConfigSpace import ConfigurationSpace
@@ -22,8 +23,8 @@ class EventOptimizer:
         configspace = ConfigurationSpace()
 
         for param in self.optimize_params:
-            configspace.add_hyperparameter(self.get_hyperparameter(param, x_train))
-
+            configspace.add_hyperparameters(self.get_hyperparameters(param, x_train))
+            
         # Provide meta data for the optimization
         scenario = Scenario({
             "run_obj": "quality",   # Optimize quality (alternatively runtime)
@@ -43,7 +44,19 @@ class EventOptimizer:
             bandwidth = self._get_param('bandwidth', config)
             sim_times = int(self._get_param('sim_times', config))
             alpha = self._get_param('alpha', config)
-            pond_times = self._get_param('pond_times', config)
+            
+            if 'y0' in config:
+                pond_times = {}
+                year = competition.start_date.year
+                pond_times[year] = config['y0']
+                pond_times[year-1] = config['y1']
+                pond_times[year-2] = config['y2']
+
+                if config['y0'] < config['y1'] or config['y1'] < config['y2']:
+                    return 10000
+
+            else:
+                pond_times = self.default_params['pond_times']
 
             competition.set_event_param(event, sex, 'bandwidth', bandwidth)
             competition.set_event_param(event, sex, 'sim_times', sim_times)
@@ -75,22 +88,35 @@ class EventOptimizer:
         else:
             return self.default_params[param]
 
-    def get_hyperparameter(self, param: str, x_train):
+    def get_hyperparameters(self, param: str, x_train) -> list:
         if param == 'bandwidth':
-            min = 10000
+            min = sys.maxsize
             max = 0
             for _, results in x_train.items():
                 min = np.min(results.Result.to_list() + [min])
                 max = np.max(results.Result.to_list() + [max])
             half_range = (max - min) / 2
 
-            return OrdinalHyperparameter('bandwidth', sequence=np.linspace(1e-3, half_range, self.runcount))
+            return [
+                OrdinalHyperparameter('bandwidth', sequence=np.linspace(1e-3, half_range, self.runcount))
+            ]
 
         if param == 'sim_times':
-            return OrdinalHyperparameter('sim_times', sequence=[str(n) for n in np.arange(1000, 10001, 1000)])
+            return [
+                OrdinalHyperparameter('sim_times', sequence=[str(n) for n in np.arange(1000, 10001, 1000)])
+            ]
 
         if param == 'alpha':
-            return OrdinalHyperparameter('alpha', sequence=np.linspace(0, 0.99, self.runcount))
+            return [
+                OrdinalHyperparameter('alpha', sequence=np.linspace(0, 0.99, self.runcount))
+            ]
+
+        if param == 'pond_times':
+            return [
+                UniformIntegerHyperparameter('y0', lower=1, upper=8, log=False),
+                UniformIntegerHyperparameter('y1', lower=1, upper=8, log=False),
+                UniformIntegerHyperparameter('y2', lower=1, upper=8, log=False)
+            ]
 
 
 class PondYearsOptimizer:
@@ -164,7 +190,7 @@ class PondYearsOptimizer:
         return train_kde
 
 
-def calculate_error1(result, prediction):
+def calculate_error1(result: list, prediction: list) -> int:
     # Adds all the times an athlete is in the actual result 
     # and an athlete is in the exact position
     
@@ -178,7 +204,7 @@ def calculate_error1(result, prediction):
     return 1 - (acc / 16) 
 
 
-def calculate_error2(result, prediction):
+def calculate_error2(result: list, prediction: list) -> int:
     # Adds the number of positions difference between 
     # the actual result and the predicted one
 
@@ -193,7 +219,7 @@ def calculate_error2(result, prediction):
     return e
 
 
-def calculate_error3(result, prediction):
+def calculate_error3(result: list, prediction: list) -> int:
     # For each athlete adds all the athletes who were above 
     # him in the prediction and not in the real result
 
@@ -210,3 +236,12 @@ def calculate_error3(result, prediction):
             continue
 
     return e
+
+
+__all__ = [
+    "EventOptimizer",
+    "PondYearsOptimizer",
+    "calculate_error1",
+    "calculate_error2",
+    "calculate_error3",
+]
