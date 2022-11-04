@@ -17,6 +17,7 @@ class EventOptimizer:
         self.calculate_error = calculate_error
         self.optimize_params = optimize_params
         self.default_params = default_params
+        self.progress = 0
 
     def optimize(self, x_train: dict, y_train: List[str], event: str, sex: str, competition: CompetitionData):        
         # Define your hyperparameters
@@ -41,6 +42,9 @@ class EventOptimizer:
         
     def _get_train_kde(self, x_train: dict, y_train: List[str], event: str, sex: str, competition: CompetitionData):
         def train_kde(config):
+            self.progress += 1
+            print(f"Optimizing... {(self.progress * 100 / self.runcount):.2f} %", end="\r")
+
             bandwidth = self._get_param('bandwidth', config)
             sim_times = int(self._get_param('sim_times', config))
             alpha = self._get_param('alpha', config)
