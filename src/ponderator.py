@@ -44,7 +44,14 @@ def ponderate_all_events(data: dict, competition: CompetitionData, years_weight:
 
         for sex in data[event]:
             alpha = competition.get_event_param(event, sex, 'alpha', alpha)
-            pond_data[event][sex] = ponderate_event(data[event][sex], maximize, years_weight, alpha, logs)
+            years_weight = competition.get_event_param(event, sex, 'pond_times', years_weight)
+            pond_data[event][sex] = ponderate_event(
+                data=data[event][sex], 
+                maximize=maximize, 
+                years_weight=years_weight,
+                alpha=alpha,
+                logs=logs,
+            )
         
     return pond_data
 
@@ -116,10 +123,10 @@ def ponderate_marks(marks: pd.DataFrame, maximize: bool, years_weight: dict, alp
         date = row[0]
         
         # Select only the marks obtained recently
-        if date.year not in years_weight.keys():
+        if str(date.year) not in years_weight.keys():
             continue
         
-        times = years_weight[date.year]
+        times = years_weight[str(date.year)]
         pond_marks.extend([row] * times)
 
     if pond_marks:

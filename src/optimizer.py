@@ -1,197 +1,12 @@
 import sys
+import glob
+import shutil
 import numpy as np
-from typing import List, Callable
-from ConfigSpace import ConfigurationSpace
-from ConfigSpace.hyperparameters import UniformIntegerHyperparameter, OrdinalHyperparameter
-from smac.facade.smac_bb_facade import SMAC4BB
-from smac.scenario.scenario import Scenario
-from src.simulator import simulate_event
+from typing import Callable
+from sklearn.metrics import ndcg_score
+from src.prediction_saver import load_json, save_json
 from src.competition_data import CompetitionData
-from src.ponderator import ponderate_event
-from src.simulator import simulate_event
-
-
-class EventOptimizer:
-    def __init__(self, runcount: int, calculate_error: Callable, optimize_params: list, default_params: dict):
-        self.runcount = runcount
-        self.calculate_error = calculate_error
-        self.optimize_params = optimize_params
-        self.default_params = default_params
-        self.progress = 0
-
-    def optimize(self, x_train: dict, y_train: List[str], event: str, sex: str, competition: CompetitionData):        
-        # Define your hyperparameters
-        configspace = ConfigurationSpace()
-
-        for param in self.optimize_params:
-            configspace.add_hyperparameters(self.get_hyperparameters(param, x_train))
-            
-        # Provide meta data for the optimization
-        scenario = Scenario({
-            "run_obj": "quality",   # Optimize quality (alternatively runtime)
-            "runcount-limit": self.runcount,   # Max number of function evaluations (the more the better)
-            "cs": configspace,
-        })
-
-        train_kde = self._get_train_kde(x_train, y_train, event, sex, competition)
-
-        smac = SMAC4BB(scenario=scenario, tae_runner=train_kde)
-        best_found_config = smac.optimize()
-        
-        return best_found_config
-        
-    def _get_train_kde(self, x_train: dict, y_train: List[str], event: str, sex: str, competition: CompetitionData):
-        def train_kde(config):
-            self.progress += 1
-            print(f"Optimizing... {(self.progress * 100 / self.runcount):.2f} %", end="\r")
-
-            bandwidth = self._get_param('bandwidth', config)
-            sim_times = int(self._get_param('sim_times', config))
-            alpha = self._get_param('alpha', config)
-            
-            if 'y0' in config:
-                pond_times = {}
-                year = competition.start_date.year
-                pond_times[year] = config['y0']
-                pond_times[year-1] = config['y1']
-                pond_times[year-2] = config['y2']
-
-                if config['y0'] < config['y1'] or config['y1'] < config['y2']:
-                    return 10000
-
-            else:
-                pond_times = self.default_params['pond_times']
-
-            competition.set_event_param(event, sex, 'bandwidth', bandwidth)
-            competition.set_event_param(event, sex, 'sim_times', sim_times)
-
-            pond_data = ponderate_event(
-                data=x_train, 
-                maximize=competition.is_maximize_event(event), 
-                years_weight=pond_times,
-                alpha=alpha
-            )
-
-            sim_result = simulate_event(
-                data=pond_data, 
-                event=event, 
-                sex=sex,
-                competition=competition,
-                times=sim_times,
-                models_folder='models',
-                override_models=True, 
-            )
-
-            return self.calculate_error(y_train, sim_result)    
-
-        return train_kde
-
-    def _get_param(self, param: str, config):
-        if param in config:
-            return config[param]
-        else:
-            return self.default_params[param]
-
-    def get_hyperparameters(self, param: str, x_train) -> list:
-        if param == 'bandwidth':
-            min = sys.maxsize
-            max = 0
-            for _, results in x_train.items():
-                min = np.min(results.Result.to_list() + [min])
-                max = np.max(results.Result.to_list() + [max])
-            half_range = (max - min) / 2
-
-            return [
-                OrdinalHyperparameter('bandwidth', sequence=np.linspace(1e-3, half_range, self.runcount))
-            ]
-
-        if param == 'sim_times':
-            return [
-                OrdinalHyperparameter('sim_times', sequence=[str(n) for n in np.arange(1000, 10001, 1000)])
-            ]
-
-        if param == 'alpha':
-            return [
-                OrdinalHyperparameter('alpha', sequence=np.linspace(0, 0.99, self.runcount))
-            ]
-
-        if param == 'pond_times':
-            return [
-                UniformIntegerHyperparameter('y0', lower=1, upper=8, log=False),
-                UniformIntegerHyperparameter('y1', lower=1, upper=8, log=False),
-                UniformIntegerHyperparameter('y2', lower=1, upper=8, log=False)
-            ]
-
-
-class PondYearsOptimizer:
-    def __init__(self, runcount: int, calculate_error: Callable):
-        self.runcount = runcount
-        self.calculate_error = calculate_error
-
-    def optimize(self, x_train: dict, y_train: List[str], competition: CompetitionData):        
-        # Define your hyperparameters
-        configspace = ConfigurationSpace()
-
-        configspace.add_hyperparameter(UniformIntegerHyperparameter('y0', lower=1, upper=8, log=False))
-        configspace.add_hyperparameter(UniformIntegerHyperparameter('y1', lower=1, upper=8, log=False))
-        configspace.add_hyperparameter(UniformIntegerHyperparameter('y2', lower=1, upper=8, log=False))
-
-        # Provide meta data for the optimization
-        scenario = Scenario({
-            "run_obj": "quality",   # Optimize quality (alternatively runtime)
-            "runcount-limit": self.runcount,   # Max number of function evaluations (the more the better)
-            "cs": configspace,
-        })
-
-        train_kde = self._get_train_kde(x_train, y_train, competition)
-
-        smac = SMAC4BB(scenario=scenario, tae_runner=train_kde)
-        best_found_config = smac.optimize()
-        
-        return best_found_config
-        
-    def _get_train_kde(self, x_train: dict, y_train: List[str], competition: CompetitionData):
-        def train_kde(config):
-            
-            pond_times = {}
-            year = competition.start_date.year
-            pond_times[year] = config['y0']
-            pond_times[year-1] = config['y1']
-            pond_times[year-2] = config['y2']
-
-            if config['y0'] < config['y1'] or config['y1'] < config['y2']:
-                return 10000
-
-            print(pond_times)
-            
-            error = 0
-            for event in competition.events:
-                for sex in competition.get_event_data(event, 'sex'):
-                    x = x_train[event][sex]
-                    y = list(y_train[event][sex].values())
-
-                    pond_data = ponderate_event(
-                        data=x, 
-                        maximize=competition.is_maximize_event(event), 
-                        years_weight=pond_times,
-                        alpha=competition.get_event_param(event, sex, 'alpha', 0)
-                    )
-
-                    sim_result = simulate_event(
-                        data=pond_data, 
-                        event=event, 
-                        sex=sex,
-                        competition=competition,
-                        times=1000,
-                        models_folder='models',
-                        override_models=True, 
-                    )
-
-                    error += self.calculate_error(y, sim_result) 
-
-            return error    
-
-        return train_kde
+from src.event_params_optimizer import EventParamsOptimizer
 
 
 def calculate_error1(result: list, prediction: list) -> int:
@@ -242,10 +57,72 @@ def calculate_error3(result: list, prediction: list) -> int:
     return e
 
 
+def calculate_error4(result: list, prediction: list) -> int:
+    # Treats the prediction system as an information retrieval system, 
+    # maximizing the ndcg_score
+
+    scores = list(range(8, 0, -1)) + [0] * (len(prediction) - 8)
+    relevance = []
+    for i, name in enumerate(prediction):
+        try:
+            relevance.append(8 - result.index(name))
+        except:
+            relevance.append(0)
+
+    relevance = np.asarray([relevance])
+    scores = np.asarray([scores])
+
+    return 1 - ndcg_score(relevance, scores)
+
+
+def _save_config(config: dict, event: str, sex: str, file: str):
+    optimal_results = load_json(file)
+    
+    if not event in optimal_results:
+        optimal_results[event] = {}
+
+    if not sex in optimal_results[event]:
+        optimal_results[event][sex] = {}
+    
+    for key, value in config.items():
+        optimal_results[event][sex][key] = value
+
+    save_json(optimal_results, file)
+
+
+def _clean_folders():
+    smacList = glob.glob('smac3-output*')
+    smacList += ['models']
+    for path in smacList:
+        shutil.rmtree(path)
+
+
+def optimize_params(events: list, data: dict, results: dict, competition: CompetitionData, params: list, runcount: int, error_calculator: Callable, file: str):
+    
+    for event in events:
+        for sex in competition.get_event_data(event, 'sex'):
+            print(f"Optimizing {event} - {sex}...")
+            optimizer = EventParamsOptimizer(
+                runcount=runcount,
+                calculate_error=error_calculator,
+                optimize_params=params,
+                default_params={
+                    "bandwidth": competition.get_event_param(event, sex, 'bandwidth', 1),
+                    "alpha": competition.get_event_param(event, sex, 'alpha', 0),
+                    "sim_times": competition.get_event_param(event, sex, 'sim_times', 5000),
+                    "pond_times": competition.get_event_param(event, sex, 'pond_times', {str(competition.start_date.year - i) : int(4 / (i+1)) for i in range(3)}),
+                }
+            )
+
+            optimal_config = optimizer.optimize(data[event][sex], list(results[event][sex].values()), event, sex, competition)
+            _save_config(optimal_config, event, sex, file)
+            _clean_folders()
+
+
 __all__ = [
-    "EventOptimizer",
-    "PondYearsOptimizer",
     "calculate_error1",
     "calculate_error2",
     "calculate_error3",
+    "calculate_error4",
+    "optimize_params",
 ]
