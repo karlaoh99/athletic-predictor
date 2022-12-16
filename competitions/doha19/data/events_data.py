@@ -126,8 +126,8 @@ events = {
         'in_group': False,
     },
     'atl_50km': {
-        'name': 'Marcha 35 kilómetros',
-        'sex': ['male'],
+        'name': 'Marcha 50 kilómetros',
+        'sex': ['male', 'female'],
         'maximize': False,
         'in_group': False,
     },
@@ -138,7 +138,7 @@ events = {
         'in_group': False,
     },
     'atl_dec': {
-        'name': 'atl_dec',
+        'name': 'Decatlón',
         'sex': ['male'],
         'maximize': True,
         'in_group': False,

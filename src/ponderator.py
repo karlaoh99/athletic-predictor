@@ -1,5 +1,6 @@
 import pandas as pd
 from src.competition_data import CompetitionData
+from src.utils import get_country_and_name
 
 
 def ponderate_all_events(data: dict, competition: CompetitionData, years_weight: dict, alpha: int = 0, logs: bool = False) -> dict:
@@ -50,13 +51,14 @@ def ponderate_all_events(data: dict, competition: CompetitionData, years_weight:
                 maximize=maximize, 
                 years_weight=years_weight,
                 alpha=alpha,
+                entry_list=competition._entry_list[event][sex],
                 logs=logs,
             )
         
     return pond_data
 
 
-def ponderate_event(data: dict, maximize: bool, years_weight: dict, alpha: int, logs: bool = False) -> dict:
+def ponderate_event(data: dict, maximize: bool, years_weight: dict, alpha: int, entry_list: list = None, logs: bool = False) -> dict:
     """Transforms an event data according to parameters years_weight and alpha.
 
     Parameters
@@ -81,6 +83,12 @@ def ponderate_event(data: dict, maximize: bool, years_weight: dict, alpha: int, 
     pond_data = {}
     
     for athlete, df in data.items():
+        _, name = get_country_and_name(athlete)
+        if entry_list is not None and name not in entry_list:
+            if logs:
+                print(f"WARNING: Athlete {athlete} is not in entry list")
+            continue
+
         pond_marks = ponderate_marks(df, maximize, years_weight, alpha)
         if pond_marks is not None:
             pond_data[athlete] = pond_marks

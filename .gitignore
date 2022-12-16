@@ -3,6 +3,6 @@ __pycache__/
 *.py[cod]
 *$py.classx
 
-competitions/*/classified
+competitions/*/data/classified
 competitions/*/models
 competitions/*/smac3-output*

@@ -1,7 +1,7 @@
 {
     "atl_100m": {
         "female": {
-            "1": "JAM_elaine_thompson-herah",
+            "1": "JAM_elaine_thompson",
             "2": "JAM_shelly-ann_fraser-pryce",
             "3": "JAM_shericka_jackson",
             "4": "CIV_marie-josée_ta_lou",
@@ -23,7 +23,7 @@
     },
     "atl_200m": {
         "female": {
-            "1": "JAM_elaine_thompson-herah",
+            "1": "JAM_elaine_thompson",
             "2": "NAM_christine_mboma",
             "3": "USA_gabrielle_thomas",
             "4": "JAM_shelly-ann_fraser-pryce",
@@ -138,7 +138,7 @@
             "3": "ETH_letesenbet_gidey",
             "4": "KEN_hellen_obiri",
             "5": "BDI_francine_niyonsaba",
-            "6": "KEN_irene_chebet_cheptai",
+            "6": "KEN_irene_cheptai",
             "7": "JPN_ririka_hironaka",
             "8": "GER_konstanze_klosterhalfen"
         },
@@ -345,7 +345,7 @@
         "male": {
             "1": "SWE_daniel_ståhl",
             "2": "SWE_simon_pettersson",
-            "3": "AUT_lukas_weisshaidinger",
+            "3": "AUT_lukas_weißhaidinger",
             "4": "AUS_matthew_denny",
             "5": "SLO_kristjan_čeh",
             "6": "LTU_andrius_gudžius",
@@ -439,18 +439,6 @@
             "6": "ESP_diego_garcía_carrera",
             "7": "CHN_kaihua_wang",
             "8": "CHN_jun_zhang"
-        }
-    },
-    "atl_50km": {
-        "male": {
-            "1": "POL_dawid_tomala",
-            "2": "GER_jonathan_hilbert",
-            "3": "CAN_evan_dunfee",
-            "4": "ESP_marc_tur",
-            "5": "POR_joão_vieira",
-            "6": "JPN_masatora_kawano",
-            "7": "CHN_tongda_bian",
-            "8": "AUS_rhydian_cowley"
         }
     },
     "atl_hep": {

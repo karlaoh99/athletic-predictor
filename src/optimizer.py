@@ -1,10 +1,9 @@
-import sys
 import glob
 import shutil
 import numpy as np
 from typing import Callable
 from sklearn.metrics import ndcg_score
-from src.prediction_saver import load_json, save_json
+from src.utils import load_json, save_json
 from src.competition_data import CompetitionData
 from src.event_params_optimizer import EventParamsOptimizer
 

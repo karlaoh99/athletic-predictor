@@ -441,28 +441,6 @@
             "8": "JPN_hiroto_jusho"
         }
     },
-    "atl_35km": {
-        "male": {
-            "1": "ITA_massimo_stano",
-            "2": "JPN_masatora_kawano",
-            "3": "SWE_perseus_karlström",
-            "4": "ECU_brian_daniel_pintado",
-            "5": "CHN_xianghong_he",
-            "6": "CAN_evan_dunfee",
-            "7": "BRA_caio_bonfim",
-            "8": "COL_eider_arévalo"
-        },
-        "female": {
-            "1": "PER_kimberly_garcía_león",
-            "2": "POL_katarzyna_zdziebło",
-            "3": "CHN_shijie_qieyang",
-            "4": "GRE_antigoni_ntrismpioti",
-            "5": "ESP_raquel_gonzález",
-            "6": "ESP_laura_garcía-caro",
-            "7": "CHN_maocuo_li",
-            "8": "BRA_viviane_lyra"
-        }
-    },
     "atl_hep": {
         "female": {
             "1": "BEL_nafissatou_thiam",

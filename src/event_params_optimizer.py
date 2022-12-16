@@ -77,7 +77,7 @@ class EventParamsOptimizer:
                 override_models=True, 
             )
 
-            return self.calculate_error(y_train, sim_result)  
+            return self.calculate_error(y_train, sim_result)   
 
         return train
 

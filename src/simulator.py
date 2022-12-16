@@ -75,7 +75,7 @@ def _run_simulation(names: List[str], models: List[KernelDensity], times: int, m
     for place in places:
         record[place[0]] += 1
     first_place = np.argmax(record)
-    
+
     order = [first_place]
     for i in range(1, count):
         order.append(_get_ith_place(places, i, order))
